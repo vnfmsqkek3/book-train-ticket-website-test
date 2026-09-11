@@ -15,7 +15,8 @@ import type {
   ApiError,
 } from '../../shared/types';
 
-const BASE = process.env.NEXT_PUBLIC_API_BASE ?? 'http://localhost:4000';
+// ALB 경로 라우팅: 기본은 상대경로 /api (동일 도메인). 로컬 개발 시 env로 override.
+const BASE = process.env.NEXT_PUBLIC_API_BASE ?? '/api';
 
 function authHeader(): Record<string, string> {
   if (typeof window === 'undefined') return {};

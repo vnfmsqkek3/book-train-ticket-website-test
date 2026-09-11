@@ -31,12 +31,19 @@ export function createApp(): express.Express {
     });
   });
 
-  app.use('/auth', authRouter);
-  app.use('/queue', queueRouter);
-  app.use('/trains', trainRouter);
-  app.use('/seat', seatRouter);
-  app.use('/booking', bookingRouter);
-  app.use('/session', sessionRouter);
+  // 라우터를 루트와 /api 프리픽스 양쪽에 마운트.
+  // CloudFront가 /api/* 를 ALB로 포워딩(경로 유지)하므로 /api 프리픽스가 필요하고,
+  // ALB 직접 접근(헬스체크 등)을 위해 루트 경로도 유지한다.
+  const mount = (base: string) => {
+    app.use(`${base}/auth`, authRouter);
+    app.use(`${base}/queue`, queueRouter);
+    app.use(`${base}/trains`, trainRouter);
+    app.use(`${base}/seat`, seatRouter);
+    app.use(`${base}/booking`, bookingRouter);
+    app.use(`${base}/session`, sessionRouter);
+  };
+  mount('');
+  mount('/api');
 
   // 에러 표준화 미들웨어 (반드시 마지막)
   app.use(errorHandler);

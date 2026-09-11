@@ -59,8 +59,10 @@ export function broadcastSeatChanges(
   });
 }
 
-export function createWebSocketServer(port: number): WebSocketServer {
-  const wss = new WebSocketServer({ port });
+export function createWebSocketServer(server: import('http').Server): WebSocketServer {
+  // HTTP 서버와 동일 포트를 공유하고 /api/ws 경로에서만 업그레이드 처리.
+  // (ALB→ECS 단일 포트 4000, CloudFront가 /api/ws 를 ALB로 프록시)
+  const wss = new WebSocketServer({ server, path: '/api/ws' });
 
   wss.on('connection', (ws: WebSocket, req: IncomingMessage) => {
     // 토큰 검증 (sequenceDiagram Step 1)
@@ -97,7 +99,7 @@ export function createWebSocketServer(port: number): WebSocketServer {
   });
 
   // eslint-disable-next-line no-console
-  console.log(`[ws] WebSocket 서버 실행 중: ws://localhost:${port}`);
+  console.log(`[ws] WebSocket 서버 실행 중 (경로 /api/ws, HTTP 서버 공유)`);
   return wss;
 }
 

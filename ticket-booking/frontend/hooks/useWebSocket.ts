@@ -8,7 +8,15 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { ServerEvent, ClientEvent } from '../../shared/types';
 import { ServerEventType } from '../../shared/types';
 
-const WS_URL = process.env.NEXT_PUBLIC_WS_URL ?? 'ws://localhost:4001';
+// ALB 경로 라우팅: 기본은 현재 호스트의 /api/ws (동일 도메인). 로컬 개발 시 env override.
+function resolveWsUrl(): string {
+  if (process.env.NEXT_PUBLIC_WS_URL) return process.env.NEXT_PUBLIC_WS_URL;
+  if (typeof window !== 'undefined') {
+    const proto = window.location.protocol === 'https:' ? 'wss' : 'ws';
+    return `${proto}://${window.location.host}/api/ws`;
+  }
+  return 'ws://localhost:4001';
+}
 
 export interface WsState {
   connected: boolean;
@@ -25,7 +33,7 @@ export function useWebSocket(token: string | null): WsState {
 
   const connect = useCallback(() => {
     if (!token) return;
-    const ws = new WebSocket(`${WS_URL}?token=${encodeURIComponent(token)}`);
+    const ws = new WebSocket(`${resolveWsUrl()}?token=${encodeURIComponent(token)}`);
     wsRef.current = ws;
 
     ws.onopen = () => {

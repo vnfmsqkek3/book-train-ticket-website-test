@@ -14,6 +14,8 @@ variable "ecs_service_name" { type = string }
 variable "container_name" { type = string }
 variable "region" { type = string }
 variable "account_id" { type = string }
+variable "frontend_bucket" { type = string }
+variable "frontend_distribution_id" { type = string }
 
 # ── CodeStar Connection (GitHub) — 생성 후 콘솔에서 사용자가 승인 ──
 resource "aws_codestarconnections_connection" "github" {
@@ -72,6 +74,19 @@ resource "aws_iam_role_policy" "codebuild" {
           "ecr:UploadLayerPart", "ecr:CompleteLayerUpload"
         ]
         Resource = "*"
+      },
+      {
+        Effect = "Allow"
+        Action = ["s3:PutObject", "s3:GetObject", "s3:ListBucket", "s3:DeleteObject"]
+        Resource = [
+          "arn:aws:s3:::${var.frontend_bucket}",
+          "arn:aws:s3:::${var.frontend_bucket}/*"
+        ]
+      },
+      {
+        Effect   = "Allow"
+        Action   = ["cloudfront:CreateInvalidation"]
+        Resource = "*"
       }
     ]
   })
@@ -117,6 +132,37 @@ resource "aws_codebuild_project" "backend" {
   tags = { Name = "ticket-codebuild-${var.env}" }
 }
 
+# ── CodeBuild 프로젝트 (프론트 static export → S3 sync → CloudFront invalidation) ──
+resource "aws_codebuild_project" "frontend" {
+  name         = "ticket-frontend-build-${var.env}"
+  service_role = aws_iam_role.codebuild.arn
+
+  artifacts { type = "CODEPIPELINE" }
+
+  environment {
+    compute_type                = "BUILD_GENERAL1_SMALL"
+    image                       = "aws/codebuild/amazonlinux2-x86_64-standard:5.0"
+    type                        = "LINUX_CONTAINER"
+    image_pull_credentials_type = "CODEBUILD"
+
+    environment_variable {
+      name  = "FRONTEND_BUCKET"
+      value = var.frontend_bucket
+    }
+    environment_variable {
+      name  = "CF_DISTRIBUTION_ID"
+      value = var.frontend_distribution_id
+    }
+  }
+
+  source {
+    type      = "CODEPIPELINE"
+    buildspec = "ticket-booking/frontend/buildspec.yml"
+  }
+
+  tags = { Name = "ticket-codebuild-frontend-${var.env}" }
+}
+
 # ── CodePipeline IAM 역할 ──
 resource "aws_iam_role" "pipeline" {
   name = "ticket-pipeline-${var.env}"
@@ -146,7 +192,7 @@ resource "aws_iam_role_policy" "pipeline" {
       {
         Effect   = "Allow"
         Action   = ["codebuild:BatchGetBuilds", "codebuild:StartBuild"]
-        Resource = aws_codebuild_project.backend.arn
+        Resource = [aws_codebuild_project.backend.arn, aws_codebuild_project.frontend.arn]
       },
       {
         Effect = "Allow"
@@ -206,7 +252,19 @@ resource "aws_codepipeline" "this" {
       version          = "1"
       input_artifacts  = ["source_output"]
       output_artifacts = ["build_output"]
+      run_order        = 1
       configuration    = { ProjectName = aws_codebuild_project.backend.name }
+    }
+    action {
+      name             = "FrontendBuildDeploy"
+      category         = "Build"
+      owner            = "AWS"
+      provider         = "CodeBuild"
+      version          = "1"
+      input_artifacts  = ["source_output"]
+      output_artifacts = ["frontend_output"]
+      run_order        = 1
+      configuration    = { ProjectName = aws_codebuild_project.frontend.name }
     }
   }
 

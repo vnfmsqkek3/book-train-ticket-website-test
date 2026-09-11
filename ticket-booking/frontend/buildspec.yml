@@ -1,0 +1,26 @@
+version: 0.2
+
+# 프론트 빌드/배포: Next static export → S3 sync → CloudFront invalidation
+# 주입 환경변수: FRONTEND_BUCKET, CF_DISTRIBUTION_ID
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 20
+    commands:
+      - 'cd ticket-booking/frontend'
+      - 'npm ci'
+  build:
+    commands:
+      - 'npm run build'
+  post_build:
+    commands:
+      - 'echo Syncing to S3'
+      - 'aws s3 sync out "s3://$FRONTEND_BUCKET" --delete'
+      - 'echo Invalidating CloudFront'
+      - 'aws cloudfront create-invalidation --distribution-id "$CF_DISTRIBUTION_ID" --paths "/*"'
+
+artifacts:
+  files:
+    - 'ticket-booking/frontend/out/**/*'
+  discard-paths: no

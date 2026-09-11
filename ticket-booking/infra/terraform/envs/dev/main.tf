@@ -125,20 +125,30 @@ module "ecs" {
   secret_arns = [module.secrets.secret_arn]
 }
 
+# 프론트엔드 정적 호스팅 (S3 + CloudFront). ALB를 API 오리진으로 사용.
+module "frontend" {
+  source       = "../../modules/frontend"
+  env          = local.env
+  alb_dns_name = module.alb.dns_name
+  account_id   = data.aws_caller_identity.current.account_id
+}
+
 # CI/CD (CodeStar GitHub 연결 + CodePipeline + CodeBuild)
 module "cicd" {
-  source           = "../../modules/cicd"
-  env              = local.env
-  github_owner     = var.github_owner
-  github_repo      = var.github_repo
-  github_branch    = "main"
-  ecr_repo_url     = module.ecr.repository_url
-  ecr_repo_arn     = module.ecr.repository_arn
-  ecs_cluster_name = module.ecs.cluster_name
-  ecs_service_name = module.ecs.service_name
-  container_name   = module.ecs.container_name
-  region           = var.region
-  account_id       = data.aws_caller_identity.current.account_id
+  source                   = "../../modules/cicd"
+  env                      = local.env
+  github_owner             = var.github_owner
+  github_repo              = var.github_repo
+  github_branch            = "main"
+  ecr_repo_url             = module.ecr.repository_url
+  ecr_repo_arn             = module.ecr.repository_arn
+  ecs_cluster_name         = module.ecs.cluster_name
+  ecs_service_name         = module.ecs.service_name
+  container_name           = module.ecs.container_name
+  region                   = var.region
+  account_id               = data.aws_caller_identity.current.account_id
+  frontend_bucket          = module.frontend.bucket_name
+  frontend_distribution_id = module.frontend.distribution_id
 }
 
 output "alb_dns" { value = module.alb.dns_name }
@@ -146,3 +156,5 @@ output "ecr_repository_url" { value = module.ecr.repository_url }
 output "db_secret_arn" { value = module.secrets.secret_arn }
 output "codestar_connection_arn" { value = module.cicd.connection_arn }
 output "pipeline_name" { value = module.cicd.pipeline_name }
+output "cloudfront_domain" { value = module.frontend.cloudfront_domain }
+output "frontend_bucket" { value = module.frontend.bucket_name }

@@ -5,6 +5,7 @@
  * - 백그라운드 스케줄러 시작
  */
 import { createApp } from './app';
+import http from 'http';
 import { config } from './config';
 import { getStore } from './db/store';
 import { allSeeds } from './data/seed';
@@ -17,12 +18,14 @@ async function main(): Promise<void> {
   await getStore().seedSeats(allSeeds());
 
   const app = createApp();
-  app.listen(config.port, () => {
+  const server = http.createServer(app);
+  // WebSocket을 동일 HTTP 서버(포트 4000)의 /api/ws 경로에 attach
+  createWebSocketServer(server);
+  server.listen(config.port, () => {
     // eslint-disable-next-line no-console
     console.log(`[http] REST API 실행 중: http://localhost:${config.port} (env=${config.env})`);
   });
 
-  createWebSocketServer(config.wsPort);
   startScheduler();
 }
 
