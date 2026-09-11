@@ -24,6 +24,7 @@ export interface QueueHistoryRow {
 }
 
 export interface Store {
+  migrate(): Promise<void>;
   getSeats(trainId: string): Promise<Seat[]>;
   getSeat(trainId: string, seatId: string): Promise<Seat | null>;
   /** Optimistic Lock: expectedVersion과 일치할 때만 갱신. 성공 시 true. */
@@ -47,6 +48,10 @@ class InMemoryStore implements Store {
 
   private key(trainId: string, seatId: string) {
     return `${trainId}:${seatId}`;
+  }
+
+  async migrate(): Promise<void> {
+    // in-memory: 스키마 불필요
   }
 
   async seedSeats(seats: Seat[]): Promise<void> {
@@ -99,6 +104,51 @@ class InMemoryStore implements Store {
 // ── mysql2 어댑터 ──
 class MySqlStore implements Store {
   constructor(private pool: mysql.Pool) {}
+
+  async migrate(): Promise<void> {
+    // 스키마 자동 생성 (idempotent). schema.sql과 동일 구조.
+    await this.pool.query(`CREATE TABLE IF NOT EXISTS seats (
+      train_id        VARCHAR(32)  NOT NULL,
+      seat_id         VARCHAR(16)  NOT NULL,
+      state           ENUM('AVAILABLE','LOCKED','SOLD') NOT NULL DEFAULT 'AVAILABLE',
+      owner_id        VARCHAR(64)  NULL,
+      version         INT          NOT NULL DEFAULT 0,
+      lock_expires_at DATETIME     NULL,
+      pos_row         INT          NOT NULL,
+      pos_col         VARCHAR(2)   NOT NULL,
+      pos_type        ENUM('WINDOW','AISLE','MIDDLE') NOT NULL,
+      PRIMARY KEY (train_id, seat_id),
+      INDEX idx_seats_state (train_id, state)
+    ) ENGINE=InnoDB`);
+
+    await this.pool.query(`CREATE TABLE IF NOT EXISTS bookings (
+      id             VARCHAR(64)  NOT NULL,
+      booking_number VARCHAR(32)  NOT NULL,
+      user_id        VARCHAR(64)  NOT NULL,
+      train_id       VARCHAR(32)  NOT NULL,
+      seat_id        VARCHAR(16)  NOT NULL,
+      created_at     DATETIME     NOT NULL,
+      ticket_url     VARCHAR(255) NOT NULL,
+      PRIMARY KEY (id),
+      UNIQUE KEY uq_booking_number (booking_number),
+      UNIQUE KEY uq_seat_once (train_id, seat_id),
+      INDEX idx_bookings_user (user_id)
+    ) ENGINE=InnoDB`);
+
+    await this.pool.query(`CREATE TABLE IF NOT EXISTS queue_history (
+      id           VARCHAR(64) NOT NULL,
+      user_id      VARCHAR(64) NOT NULL,
+      train_id     VARCHAR(32) NOT NULL,
+      queue_number INT         NOT NULL,
+      joined_at    DATETIME    NOT NULL,
+      exited_at    DATETIME    NULL,
+      status       ENUM('WAITING','READY','PROCESSING','COMPLETED','TIMEOUT','CANCELLED') NOT NULL,
+      reason       VARCHAR(64) NULL,
+      PRIMARY KEY (id),
+      INDEX idx_queue_user (user_id, train_id),
+      INDEX idx_queue_status (train_id, status)
+    ) ENGINE=InnoDB`);
+  }
 
   async seedSeats(seats: Seat[]): Promise<void> {
     if (seats.length === 0) return;

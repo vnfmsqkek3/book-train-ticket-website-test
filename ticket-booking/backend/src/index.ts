@@ -12,7 +12,8 @@ import { createWebSocketServer } from './websocket/server';
 import { startScheduler } from './scheduler';
 
 async function main(): Promise<void> {
-  // 좌석 시드 (make.md §4 좌석 데이터)
+  // 스키마 자동 생성 후 좌석 시드 (make.md §4 좌석 데이터)
+  await getStore().migrate();
   await getStore().seedSeats(allSeeds());
 
   const app = createApp();
