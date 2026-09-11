@@ -1,0 +1,25 @@
+# 의존성 / 빌드 산출물
+node_modules/
+dist/
+.next/
+out/
+build/
+coverage/
+
+# 환경변수 (템플릿 .env.example만 커밋)
+.env
+.env.dev
+.env.staging
+.env.prod
+.env.local
+
+# Terraform 상태/캐시
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.backup
+
+# 로그 / OS
+*.log
+.DS_Store
+dlt/results/

@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.next/
+out/
+.env
+.env.dev
+.env.staging
+.env.prod
+*.log
+.DS_Store
+coverage/
+.terraform/
+*.tfstate
+*.tfstate.backup
+dlt/results/

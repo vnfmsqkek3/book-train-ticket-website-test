@@ -1,0 +1,60 @@
+# CD: 배포 (make.md §5 CI/CD)
+#   dev 브랜치 → dev 환경 배포
+#   main 브랜치 → staging 환경 배포
+# ECR 푸시 후 ECS 서비스 강제 새 배포.
+name: CD
+
+on:
+  push:
+    branches: [dev, main]
+
+permissions:
+  id-token: write # OIDC로 AWS 자격증명 (장기 키 불필요)
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      AWS_REGION: ap-northeast-2
+      ECR_REPO: ticket-booking-backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 배포 환경 결정
+        id: env
+        run: |
+          if [ "${GITHUB_REF_NAME}" = "main" ]; then
+            echo "target=staging" >> "$GITHUB_OUTPUT"
+          else
+            echo "target=dev" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: AWS 자격증명 (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: ECR 로그인
+        id: ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: 백엔드 이미지 빌드 & 푸시
+        env:
+          REGISTRY: ${{ steps.ecr.outputs.registry }}
+          TARGET: ${{ steps.env.outputs.target }}
+        run: |
+          IMAGE="$REGISTRY/$ECR_REPO:$TARGET-${GITHUB_SHA::8}"
+          docker build -t "$IMAGE" ticket-booking/backend
+          docker push "$IMAGE"
+          echo "IMAGE=$IMAGE" >> "$GITHUB_ENV"
+
+      - name: ECS 서비스 롤링 배포
+        env:
+          TARGET: ${{ steps.env.outputs.target }}
+        run: |
+          aws ecs update-service \
+            --cluster "ticket-booking-$TARGET" \
+            --service "ticket-backend-$TARGET" \
+            --force-new-deployment
