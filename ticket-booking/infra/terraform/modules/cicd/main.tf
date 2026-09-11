@@ -152,7 +152,8 @@ resource "aws_iam_role_policy" "pipeline" {
         Effect = "Allow"
         Action = [
           "ecs:DescribeServices", "ecs:DescribeTaskDefinition", "ecs:DescribeTasks",
-          "ecs:ListTasks", "ecs:RegisterTaskDefinition", "ecs:UpdateService"
+          "ecs:ListTasks", "ecs:RegisterTaskDefinition", "ecs:DeregisterTaskDefinition",
+          "ecs:UpdateService", "ecs:TagResource"
         ]
         Resource = "*"
       },
