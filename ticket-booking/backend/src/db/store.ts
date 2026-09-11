@@ -36,6 +36,7 @@ export interface Store {
   ): Promise<boolean>;
   insertBooking(b: Booking): Promise<void>;
   getBooking(bookingId: string): Promise<Booking | null>;
+  deleteBooking(bookingId: string): Promise<void>;
   insertQueueHistory(row: QueueHistoryRow): Promise<void>;
   seedSeats(seats: Seat[]): Promise<void>;
 }
@@ -94,6 +95,10 @@ class InMemoryStore implements Store {
 
   async getBooking(bookingId: string): Promise<Booking | null> {
     return this.bookings.get(bookingId) ?? null;
+  }
+
+  async deleteBooking(bookingId: string): Promise<void> {
+    this.bookings.delete(bookingId);
   }
 
   async insertQueueHistory(row: QueueHistoryRow): Promise<void> {
@@ -241,6 +246,10 @@ class MySqlStore implements Store {
       createdAt: r.created_at,
       ticketDownloadUrl: r.ticket_url,
     };
+  }
+
+  async deleteBooking(bookingId: string): Promise<void> {
+    await this.pool.query('DELETE FROM bookings WHERE id = ?', [bookingId]);
   }
 
   async insertQueueHistory(row: QueueHistoryRow): Promise<void> {

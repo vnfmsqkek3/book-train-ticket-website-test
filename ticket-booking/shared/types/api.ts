@@ -92,9 +92,26 @@ export interface BookingResponse {
   booking: Booking;
 }
 
+// ── DELETE /booking/:bookingId (예약 취소) ──
+export interface CancelBookingResponse {
+  ok: true;
+  seatId: string;
+  trainId: string;
+}
+
+// ── POST /auth/logout (토큰 무효화 + 세션 정리) ──
+export interface LogoutResponse {
+  ok: true;
+}
+
 // ── GET /session/:userId ──
 export interface SessionResponse {
   session: Session;
+}
+
+// ── DELETE /session/:userId (세션 정리) ──
+export interface ClearSessionResponse {
+  ok: true;
 }
 
 // re-export

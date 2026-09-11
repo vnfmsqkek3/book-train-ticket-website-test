@@ -1,0 +1,3420 @@
+{
+  "version": 4,
+  "terraform_version": "1.14.9",
+  "serial": 63,
+  "lineage": "ebbf187b-bf0c-ce68-d329-90343c311a61",
+  "outputs": {
+    "alb_dns": {
+      "value": "ticket-alb-dev-779194605.ap-northeast-2.elb.amazonaws.com",
+      "type": "string"
+    },
+    "cloudfront_domain": {
+      "value": "d351pu22mbh02k.cloudfront.net",
+      "type": "string"
+    },
+    "codestar_connection_arn": {
+      "value": "arn:aws:codestar-connections:ap-northeast-2:566533524321:connection/e76da661-f08e-4bdb-b148-f40de5ad5b00",
+      "type": "string"
+    },
+    "db_secret_arn": {
+      "value": "arn:aws:secretsmanager:ap-northeast-2:566533524321:secret:ticket/db/dev/master-JHYmrG",
+      "type": "string"
+    },
+    "ecr_repository_url": {
+      "value": "566533524321.dkr.ecr.ap-northeast-2.amazonaws.com/ticket-booking-backend-dev",
+      "type": "string"
+    },
+    "frontend_bucket": {
+      "value": "ticket-frontend-dev-566533524321",
+      "type": "string"
+    },
+    "pipeline_name": {
+      "value": "ticket-pipeline-dev",
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "mode": "data",
+      "type": "aws_caller_identity",
+      "name": "current",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "account_id": "566533524321",
+            "arn": "arn:aws:sts::566533524321:assumed-role/mzc_solutions_architect/aws-go-sdk-1789113982782008000",
+            "id": "566533524321",
+            "user_id": "AROAYH2AHRNQQXUHIFESU:aws-go-sdk-1789113982782008000"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        }
+      ]
+    },
+    {
+      "module": "module.alb",
+      "mode": "managed",
+      "type": "aws_lb",
+      "name": "this",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "access_logs": [
+              {
+                "bucket": "",
+                "enabled": false,
+                "prefix": ""
+              }
+            ],
+            "arn": "arn:aws:elasticloadbalancing:ap-northeast-2:566533524321:loadbalancer/app/ticket-alb-dev/43b5d5ac99898cc1",
+            "arn_suffix": "app/ticket-alb-dev/43b5d5ac99898cc1",
+            "client_keep_alive": 3600,
+            "connection_logs": [
+              {
+                "bucket": "",
+                "enabled": false,
+                "prefix": ""
+              }
+            ],
+            "customer_owned_ipv4_pool": "",
+            "desync_mitigation_mode": "defensive",
+            "dns_name": "ticket-alb-dev-779194605.ap-northeast-2.elb.amazonaws.com",
+            "dns_record_client_routing_policy": null,
+            "drop_invalid_header_fields": false,
+            "enable_cross_zone_load_balancing": true,
+            "enable_deletion_protection": false,
+            "enable_http2": true,
+            "enable_tls_version_and_cipher_suite_headers": false,
+            "enable_waf_fail_open": false,
+            "enable_xff_client_port": false,
+            "enable_zonal_shift": false,
+            "enforce_security_group_inbound_rules_on_private_link_traffic": "",
+            "id": "arn:aws:elasticloadbalancing:ap-northeast-2:566533524321:loadbalancer/app/ticket-alb-dev/43b5d5ac99898cc1",
+            "idle_timeout": 300,
+            "internal": false,
+            "ip_address_type": "ipv4",
+            "ipam_pools": [],
+            "load_balancer_type": "application",
+            "minimum_load_balancer_capacity": [],
+            "name": "ticket-alb-dev",
+            "name_prefix": "",
+            "preserve_host_header": false,
+            "security_groups": [
+              "sg-0da682d22b265d4a1"
+            ],
+            "subnet_mapping": [
+              {
+                "allocation_id": "",
+                "ipv6_address": "",
+                "outpost_id": "",
+                "private_ipv4_address": "",
+                "subnet_id": "subnet-044fa2a8b38eb1dc7"
+              },
+              {
+                "allocation_id": "",
+                "ipv6_address": "",
+                "outpost_id": "",
+                "private_ipv4_address": "",
+                "subnet_id": "subnet-0d459090918954223"
+              }
+            ],
+            "subnets": [
+              "subnet-044fa2a8b38eb1dc7",
+              "subnet-0d459090918954223"
+            ],
+            "tags": {
+              "Environment": "dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Project": "ticket"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-038bacf337624c780",
+            "xff_header_processing_mode": "append",
+            "zone_id": "ZWKZPGTI48KDX"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6NjAwMDAwMDAwMDAwLCJ1cGRhdGUiOjYwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "module.network.aws_security_group.alb",
+            "module.network.aws_subnet.public",
+            "module.network.aws_vpc.this",
+            "module.network.data.aws_availability_zones.available"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.alb",
+      "mode": "managed",
+      "type": "aws_lb_listener",
+      "name": "http",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "alpn_policy": null,
+            "arn": "arn:aws:elasticloadbalancing:ap-northeast-2:566533524321:listener/app/ticket-alb-dev/43b5d5ac99898cc1/cd12752c8ad41416",
+            "certificate_arn": null,
+            "default_action": [
+              {
+                "authenticate_cognito": [],
+                "authenticate_oidc": [],
+                "fixed_response": [],
+                "forward": [],
+                "order": 1,
+                "redirect": [],
+                "target_group_arn": "arn:aws:elasticloadbalancing:ap-northeast-2:566533524321:targetgroup/ticket-tg-dev/4a1d8f6d957e98bf",
+                "type": "forward"
+              }
+            ],
+            "id": "arn:aws:elasticloadbalancing:ap-northeast-2:566533524321:listener/app/ticket-alb-dev/43b5d5ac99898cc1/cd12752c8ad41416",
+            "load_balancer_arn": "arn:aws:elasticloadbalancing:ap-northeast-2:566533524321:loadbalancer/app/ticket-alb-dev/43b5d5ac99898cc1",
+            "mutual_authentication": [],
+            "port": 80,
+            "protocol": "HTTP",
+            "routing_http_request_x_amzn_mtls_clientcert_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_issuer_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_leaf_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_serial_number_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_subject_header_name": null,
+            "routing_http_request_x_amzn_mtls_clientcert_validity_header_name": null,
+            "routing_http_request_x_amzn_tls_cipher_suite_header_name": null,
+            "routing_http_request_x_amzn_tls_version_header_name": null,
+            "routing_http_response_access_control_allow_credentials_header_value": "",
+            "routing_http_response_access_control_allow_headers_header_value": "",
+            "routing_http_response_access_control_allow_methods_header_value": "",
+            "routing_http_response_access_control_allow_origin_header_value": "",
+            "routing_http_response_access_control_expose_headers_header_value": "",
+            "routing_http_response_access_control_max_age_header_value": "",
+            "routing_http_response_content_security_policy_header_value": "",
+            "routing_http_response_server_enabled": true,
+            "routing_http_response_strict_transport_security_header_value": "",
+            "routing_http_response_x_content_type_options_header_value": "",
+            "routing_http_response_x_frame_options_header_value": "",
+            "ssl_policy": "",
+            "tags": {},
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Project": "ticket"
+            },
+            "tcp_idle_timeout_seconds": null,
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAsInVwZGF0ZSI6MzAwMDAwMDAwMDAwfX0=",
+          "dependencies": [
+            "module.alb.aws_lb.this",
+            "module.alb.aws_lb_target_group.backend",
+            "module.network.aws_security_group.alb",
+            "module.network.aws_subnet.public",
+            "module.network.aws_vpc.this",
+            "module.network.data.aws_availability_zones.available"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.alb",
+      "mode": "managed",
+      "type": "aws_lb_target_group",
+      "name": "backend",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:elasticloadbalancing:ap-northeast-2:566533524321:targetgroup/ticket-tg-dev/4a1d8f6d957e98bf",
+            "arn_suffix": "targetgroup/ticket-tg-dev/4a1d8f6d957e98bf",
+            "connection_termination": null,
+            "deregistration_delay": "300",
+            "health_check": [
+              {
+                "enabled": true,
+                "healthy_threshold": 2,
+                "interval": 30,
+                "matcher": "200",
+                "path": "/health",
+                "port": "traffic-port",
+                "protocol": "HTTP",
+                "timeout": 5,
+                "unhealthy_threshold": 3
+              }
+            ],
+            "id": "arn:aws:elasticloadbalancing:ap-northeast-2:566533524321:targetgroup/ticket-tg-dev/4a1d8f6d957e98bf",
+            "ip_address_type": "ipv4",
+            "lambda_multi_value_headers_enabled": false,
+            "load_balancer_arns": [
+              "arn:aws:elasticloadbalancing:ap-northeast-2:566533524321:loadbalancer/app/ticket-alb-dev/43b5d5ac99898cc1"
+            ],
+            "load_balancing_algorithm_type": "round_robin",
+            "load_balancing_anomaly_mitigation": "off",
+            "load_balancing_cross_zone_enabled": "use_load_balancer_configuration",
+            "name": "ticket-tg-dev",
+            "name_prefix": "",
+            "port": 4000,
+            "preserve_client_ip": null,
+            "protocol": "HTTP",
+            "protocol_version": "HTTP1",
+            "proxy_protocol_v2": false,
+            "slow_start": 0,
+            "stickiness": [
+              {
+                "cookie_duration": 300,
+                "cookie_name": "",
+                "enabled": true,
+                "type": "lb_cookie"
+              }
+            ],
+            "tags": {
+              "Name": "ticket-tg-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-tg-dev",
+              "Project": "ticket"
+            },
+            "target_failover": [
+              {
+                "on_deregistration": null,
+                "on_unhealthy": null
+              }
+            ],
+            "target_group_health": [
+              {
+                "dns_failover": [
+                  {
+                    "minimum_healthy_targets_count": "1",
+                    "minimum_healthy_targets_percentage": "off"
+                  }
+                ],
+                "unhealthy_state_routing": [
+                  {
+                    "minimum_healthy_targets_count": 1,
+                    "minimum_healthy_targets_percentage": "off"
+                  }
+                ]
+              }
+            ],
+            "target_health_state": [
+              {
+                "enable_unhealthy_connection_termination": null,
+                "unhealthy_draining_interval": null
+              }
+            ],
+            "target_type": "ip",
+            "vpc_id": "vpc-038bacf337624c780"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.network.aws_vpc.this"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.cicd",
+      "mode": "managed",
+      "type": "aws_codebuild_project",
+      "name": "backend",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:codebuild:ap-northeast-2:566533524321:project/ticket-backend-build-dev",
+            "artifacts": [
+              {
+                "artifact_identifier": "",
+                "bucket_owner_access": "",
+                "encryption_disabled": false,
+                "location": "",
+                "name": "ticket-backend-build-dev",
+                "namespace_type": "",
+                "override_artifact_name": false,
+                "packaging": "NONE",
+                "path": "",
+                "type": "CODEPIPELINE"
+              }
+            ],
+            "badge_enabled": false,
+            "badge_url": "",
+            "build_batch_config": [],
+            "build_timeout": 60,
+            "cache": [
+              {
+                "location": "",
+                "modes": [],
+                "type": "NO_CACHE"
+              }
+            ],
+            "concurrent_build_limit": 0,
+            "description": "",
+            "encryption_key": "arn:aws:kms:ap-northeast-2:566533524321:alias/aws/s3",
+            "environment": [
+              {
+                "certificate": "",
+                "compute_type": "BUILD_GENERAL1_SMALL",
+                "environment_variable": [
+                  {
+                    "name": "AWS_ACCOUNT_ID",
+                    "type": "PLAINTEXT",
+                    "value": "566533524321"
+                  },
+                  {
+                    "name": "AWS_DEFAULT_REGION",
+                    "type": "PLAINTEXT",
+                    "value": "ap-northeast-2"
+                  },
+                  {
+                    "name": "ECR_REPO_URL",
+                    "type": "PLAINTEXT",
+                    "value": "566533524321.dkr.ecr.ap-northeast-2.amazonaws.com/ticket-booking-backend-dev"
+                  },
+                  {
+                    "name": "CONTAINER_NAME",
+                    "type": "PLAINTEXT",
+                    "value": "backend"
+                  }
+                ],
+                "fleet": [],
+                "image": "aws/codebuild/amazonlinux2-x86_64-standard:5.0",
+                "image_pull_credentials_type": "CODEBUILD",
+                "privileged_mode": true,
+                "registry_credential": [],
+                "type": "LINUX_CONTAINER"
+              }
+            ],
+            "file_system_locations": [],
+            "id": "arn:aws:codebuild:ap-northeast-2:566533524321:project/ticket-backend-build-dev",
+            "logs_config": [
+              {
+                "cloudwatch_logs": [
+                  {
+                    "group_name": "",
+                    "status": "ENABLED",
+                    "stream_name": ""
+                  }
+                ],
+                "s3_logs": [
+                  {
+                    "bucket_owner_access": "",
+                    "encryption_disabled": false,
+                    "location": "",
+                    "status": "DISABLED"
+                  }
+                ]
+              }
+            ],
+            "name": "ticket-backend-build-dev",
+            "project_visibility": "PRIVATE",
+            "public_project_alias": "",
+            "queued_timeout": 480,
+            "resource_access_role": "",
+            "secondary_artifacts": [],
+            "secondary_source_version": [],
+            "secondary_sources": [],
+            "service_role": "arn:aws:iam::566533524321:role/ticket-codebuild-dev",
+            "source": [
+              {
+                "auth": [],
+                "build_status_config": [],
+                "buildspec": "ticket-booking/backend/buildspec.yml",
+                "git_clone_depth": 0,
+                "git_submodules_config": [],
+                "insecure_ssl": false,
+                "location": "",
+                "report_build_status": false,
+                "type": "CODEPIPELINE"
+              }
+            ],
+            "source_version": "",
+            "tags": {
+              "Name": "ticket-codebuild-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-codebuild-dev",
+              "Project": "ticket"
+            },
+            "vpc_config": []
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "data.aws_caller_identity.current",
+            "module.cicd.aws_iam_role.codebuild",
+            "module.ecr.aws_ecr_repository.backend"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.cicd",
+      "mode": "managed",
+      "type": "aws_codebuild_project",
+      "name": "frontend",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:codebuild:ap-northeast-2:566533524321:project/ticket-frontend-build-dev",
+            "artifacts": [
+              {
+                "artifact_identifier": "",
+                "bucket_owner_access": "",
+                "encryption_disabled": false,
+                "location": "",
+                "name": "ticket-frontend-build-dev",
+                "namespace_type": "",
+                "override_artifact_name": false,
+                "packaging": "NONE",
+                "path": "",
+                "type": "CODEPIPELINE"
+              }
+            ],
+            "badge_enabled": false,
+            "badge_url": "",
+            "build_batch_config": [],
+            "build_timeout": 60,
+            "cache": [
+              {
+                "location": "",
+                "modes": [],
+                "type": "NO_CACHE"
+              }
+            ],
+            "concurrent_build_limit": 0,
+            "description": "",
+            "encryption_key": "arn:aws:kms:ap-northeast-2:566533524321:alias/aws/s3",
+            "environment": [
+              {
+                "certificate": "",
+                "compute_type": "BUILD_GENERAL1_SMALL",
+                "environment_variable": [
+                  {
+                    "name": "FRONTEND_BUCKET",
+                    "type": "PLAINTEXT",
+                    "value": "ticket-frontend-dev-566533524321"
+                  },
+                  {
+                    "name": "CF_DISTRIBUTION_ID",
+                    "type": "PLAINTEXT",
+                    "value": "EDUWCB9UBSTDS"
+                  }
+                ],
+                "fleet": [],
+                "image": "aws/codebuild/amazonlinux2-x86_64-standard:5.0",
+                "image_pull_credentials_type": "CODEBUILD",
+                "privileged_mode": false,
+                "registry_credential": [],
+                "type": "LINUX_CONTAINER"
+              }
+            ],
+            "file_system_locations": [],
+            "id": "arn:aws:codebuild:ap-northeast-2:566533524321:project/ticket-frontend-build-dev",
+            "logs_config": [
+              {
+                "cloudwatch_logs": [
+                  {
+                    "group_name": "",
+                    "status": "ENABLED",
+                    "stream_name": ""
+                  }
+                ],
+                "s3_logs": [
+                  {
+                    "bucket_owner_access": "",
+                    "encryption_disabled": false,
+                    "location": "",
+                    "status": "DISABLED"
+                  }
+                ]
+              }
+            ],
+            "name": "ticket-frontend-build-dev",
+            "project_visibility": "PRIVATE",
+            "public_project_alias": "",
+            "queued_timeout": 480,
+            "resource_access_role": "",
+            "secondary_artifacts": [],
+            "secondary_source_version": [],
+            "secondary_sources": [],
+            "service_role": "arn:aws:iam::566533524321:role/ticket-codebuild-dev",
+            "source": [
+              {
+                "auth": [],
+                "build_status_config": [],
+                "buildspec": "ticket-booking/frontend/buildspec.yml",
+                "git_clone_depth": 0,
+                "git_submodules_config": [],
+                "insecure_ssl": false,
+                "location": "",
+                "report_build_status": false,
+                "type": "CODEPIPELINE"
+              }
+            ],
+            "source_version": "",
+            "tags": {
+              "Name": "ticket-codebuild-frontend-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-codebuild-frontend-dev",
+              "Project": "ticket"
+            },
+            "vpc_config": []
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "data.aws_caller_identity.current",
+            "module.alb.aws_lb.this",
+            "module.cicd.aws_iam_role.codebuild",
+            "module.frontend.aws_cloudfront_distribution.this",
+            "module.frontend.aws_cloudfront_origin_access_control.s3",
+            "module.frontend.aws_s3_bucket.frontend",
+            "module.network.aws_security_group.alb",
+            "module.network.aws_subnet.public",
+            "module.network.aws_vpc.this",
+            "module.network.data.aws_availability_zones.available"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.cicd",
+      "mode": "managed",
+      "type": "aws_codepipeline",
+      "name": "this",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:codepipeline:ap-northeast-2:566533524321:ticket-pipeline-dev",
+            "artifact_store": [
+              {
+                "encryption_key": [],
+                "location": "ticket-pipeline-artifacts-dev-566533524321",
+                "region": "",
+                "type": "S3"
+              }
+            ],
+            "execution_mode": "SUPERSEDED",
+            "id": "ticket-pipeline-dev",
+            "name": "ticket-pipeline-dev",
+            "pipeline_type": "V1",
+            "role_arn": "arn:aws:iam::566533524321:role/ticket-pipeline-dev",
+            "stage": [
+              {
+                "action": [
+                  {
+                    "category": "Source",
+                    "configuration": {
+                      "BranchName": "main",
+                      "ConnectionArn": "arn:aws:codestar-connections:ap-northeast-2:566533524321:connection/e76da661-f08e-4bdb-b148-f40de5ad5b00",
+                      "DetectChanges": "true",
+                      "FullRepositoryId": "vnfmsqkek3/book-train-ticket-website-test",
+                      "OutputArtifactFormat": "CODE_ZIP"
+                    },
+                    "input_artifacts": [],
+                    "name": "GitHub",
+                    "namespace": "",
+                    "output_artifacts": [
+                      "source_output"
+                    ],
+                    "owner": "AWS",
+                    "provider": "CodeStarSourceConnection",
+                    "region": "",
+                    "role_arn": "",
+                    "run_order": 1,
+                    "timeout_in_minutes": 0,
+                    "version": "1"
+                  }
+                ],
+                "before_entry": [],
+                "name": "Source",
+                "on_failure": [],
+                "on_success": []
+              },
+              {
+                "action": [
+                  {
+                    "category": "Build",
+                    "configuration": {
+                      "ProjectName": "ticket-backend-build-dev"
+                    },
+                    "input_artifacts": [
+                      "source_output"
+                    ],
+                    "name": "DockerBuild",
+                    "namespace": "",
+                    "output_artifacts": [
+                      "build_output"
+                    ],
+                    "owner": "AWS",
+                    "provider": "CodeBuild",
+                    "region": "",
+                    "role_arn": "",
+                    "run_order": 1,
+                    "timeout_in_minutes": 0,
+                    "version": "1"
+                  },
+                  {
+                    "category": "Build",
+                    "configuration": {
+                      "ProjectName": "ticket-frontend-build-dev"
+                    },
+                    "input_artifacts": [
+                      "source_output"
+                    ],
+                    "name": "FrontendBuildDeploy",
+                    "namespace": "",
+                    "output_artifacts": [
+                      "frontend_output"
+                    ],
+                    "owner": "AWS",
+                    "provider": "CodeBuild",
+                    "region": "",
+                    "role_arn": "",
+                    "run_order": 1,
+                    "timeout_in_minutes": 0,
+                    "version": "1"
+                  }
+                ],
+                "before_entry": [],
+                "name": "Build",
+                "on_failure": [],
+                "on_success": []
+              },
+              {
+                "action": [
+                  {
+                    "category": "Deploy",
+                    "configuration": {
+                      "ClusterName": "ticket-booking-dev",
+                      "FileName": "imagedefinitions.json",
+                      "ServiceName": "ticket-backend-dev"
+                    },
+                    "input_artifacts": [
+                      "build_output"
+                    ],
+                    "name": "ECSDeploy",
+                    "namespace": "",
+                    "output_artifacts": [],
+                    "owner": "AWS",
+                    "provider": "ECS",
+                    "region": "",
+                    "role_arn": "",
+                    "run_order": 1,
+                    "timeout_in_minutes": 0,
+                    "version": "1"
+                  }
+                ],
+                "before_entry": [],
+                "name": "Deploy",
+                "on_failure": [],
+                "on_success": []
+              }
+            ],
+            "tags": {
+              "Name": "ticket-pipeline-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-pipeline-dev",
+              "Project": "ticket"
+            },
+            "trigger": [],
+            "trigger_all": [],
+            "variable": []
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "data.aws_caller_identity.current",
+            "module.alb.aws_lb.this",
+            "module.alb.aws_lb_target_group.backend",
+            "module.cicd.aws_codebuild_project.backend",
+            "module.cicd.aws_codebuild_project.frontend",
+            "module.cicd.aws_codestarconnections_connection.github",
+            "module.cicd.aws_iam_role.codebuild",
+            "module.cicd.aws_iam_role.pipeline",
+            "module.cicd.aws_s3_bucket.artifacts",
+            "module.ecr.aws_ecr_repository.backend",
+            "module.ecs.aws_cloudwatch_log_group.backend",
+            "module.ecs.aws_ecs_cluster.this",
+            "module.ecs.aws_ecs_service.backend",
+            "module.ecs.aws_ecs_task_definition.backend",
+            "module.ecs.aws_iam_role.task_execution",
+            "module.ecs.data.aws_region.current",
+            "module.elasticache.aws_elasticache_replication_group.this",
+            "module.elasticache.aws_elasticache_subnet_group.this",
+            "module.frontend.aws_cloudfront_distribution.this",
+            "module.frontend.aws_cloudfront_origin_access_control.s3",
+            "module.frontend.aws_s3_bucket.frontend",
+            "module.network.aws_security_group.alb",
+            "module.network.aws_security_group.backend",
+            "module.network.aws_security_group.db",
+            "module.network.aws_security_group.redis",
+            "module.network.aws_subnet.private",
+            "module.network.aws_subnet.public",
+            "module.network.aws_vpc.this",
+            "module.network.data.aws_availability_zones.available",
+            "module.rds.aws_db_instance.this",
+            "module.rds.aws_db_subnet_group.this",
+            "module.secrets.aws_secretsmanager_secret.db",
+            "module.secrets.random_password.db"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.cicd",
+      "mode": "managed",
+      "type": "aws_codestarconnections_connection",
+      "name": "github",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:codestar-connections:ap-northeast-2:566533524321:connection/e76da661-f08e-4bdb-b148-f40de5ad5b00",
+            "connection_status": "AVAILABLE",
+            "host_arn": "",
+            "id": "arn:aws:codestar-connections:ap-northeast-2:566533524321:connection/e76da661-f08e-4bdb-b148-f40de5ad5b00",
+            "name": "ticket-gh-dev",
+            "provider_type": "GitHub",
+            "tags": {
+              "Name": "ticket-codestar-github-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-codestar-github-dev",
+              "Project": "ticket"
+            }
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA=="
+        }
+      ]
+    },
+    {
+      "module": "module.cicd",
+      "mode": "managed",
+      "type": "aws_iam_role",
+      "name": "codebuild",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:iam::566533524321:role/ticket-codebuild-dev",
+            "assume_role_policy": "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"codebuild.amazonaws.com\"}}],\"Version\":\"2012-10-17\"}",
+            "create_date": "2026-09-11T06:38:14Z",
+            "description": "",
+            "force_detach_policies": false,
+            "id": "ticket-codebuild-dev",
+            "inline_policy": [
+              {
+                "name": "ticket-codebuild-policy-dev",
+                "policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":[\"logs:CreateLogGroup\",\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Effect\":\"Allow\",\"Resource\":\"*\"},{\"Action\":[\"s3:GetObject\",\"s3:PutObject\",\"s3:GetBucketLocation\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:s3:::ticket-pipeline-artifacts-dev-566533524321\",\"arn:aws:s3:::ticket-pipeline-artifacts-dev-566533524321/*\"]},{\"Action\":[\"ecr:GetAuthorizationToken\",\"ecr:BatchCheckLayerAvailability\",\"ecr:GetDownloadUrlForLayer\",\"ecr:BatchGetImage\",\"ecr:PutImage\",\"ecr:InitiateLayerUpload\",\"ecr:UploadLayerPart\",\"ecr:CompleteLayerUpload\"],\"Effect\":\"Allow\",\"Resource\":\"*\"}]}"
+              }
+            ],
+            "managed_policy_arns": [],
+            "max_session_duration": 3600,
+            "name": "ticket-codebuild-dev",
+            "name_prefix": "",
+            "path": "/",
+            "permissions_boundary": "",
+            "tags": {
+              "Name": "ticket-codebuild-role-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-codebuild-role-dev",
+              "Project": "ticket"
+            },
+            "unique_id": "AROAYH2AHRNQWXFRXH67R"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA=="
+        }
+      ]
+    },
+    {
+      "module": "module.cicd",
+      "mode": "managed",
+      "type": "aws_iam_role",
+      "name": "pipeline",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:iam::566533524321:role/ticket-pipeline-dev",
+            "assume_role_policy": "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"codepipeline.amazonaws.com\"}}],\"Version\":\"2012-10-17\"}",
+            "create_date": "2026-09-11T06:38:14Z",
+            "description": "",
+            "force_detach_policies": false,
+            "id": "ticket-pipeline-dev",
+            "inline_policy": [
+              {
+                "name": "ticket-pipeline-policy-dev",
+                "policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":[\"s3:GetObject\",\"s3:PutObject\",\"s3:GetBucketLocation\",\"s3:ListBucket\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:s3:::ticket-pipeline-artifacts-dev-566533524321\",\"arn:aws:s3:::ticket-pipeline-artifacts-dev-566533524321/*\"]},{\"Action\":[\"codestar-connections:UseConnection\"],\"Effect\":\"Allow\",\"Resource\":\"arn:aws:codestar-connections:ap-northeast-2:566533524321:connection/e76da661-f08e-4bdb-b148-f40de5ad5b00\"},{\"Action\":[\"codebuild:BatchGetBuilds\",\"codebuild:StartBuild\"],\"Effect\":\"Allow\",\"Resource\":\"arn:aws:codebuild:ap-northeast-2:566533524321:project/ticket-backend-build-dev\"},{\"Action\":[\"ecs:DescribeServices\",\"ecs:DescribeTaskDefinition\",\"ecs:DescribeTasks\",\"ecs:ListTasks\",\"ecs:RegisterTaskDefinition\",\"ecs:DeregisterTaskDefinition\",\"ecs:UpdateService\",\"ecs:TagResource\"],\"Effect\":\"Allow\",\"Resource\":\"*\"},{\"Action\":[\"iam:PassRole\"],\"Condition\":{\"StringLike\":{\"iam:PassedToService\":\"ecs-tasks.amazonaws.com\"}},\"Effect\":\"Allow\",\"Resource\":\"*\"}]}"
+              }
+            ],
+            "managed_policy_arns": [],
+            "max_session_duration": 3600,
+            "name": "ticket-pipeline-dev",
+            "name_prefix": "",
+            "path": "/",
+            "permissions_boundary": "",
+            "tags": {
+              "Name": "ticket-pipeline-role-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-pipeline-role-dev",
+              "Project": "ticket"
+            },
+            "unique_id": "AROAYH2AHRNQWTEFAPFGB"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA=="
+        }
+      ]
+    },
+    {
+      "module": "module.cicd",
+      "mode": "managed",
+      "type": "aws_iam_role_policy",
+      "name": "codebuild",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "ticket-codebuild-dev:ticket-codebuild-policy-dev",
+            "name": "ticket-codebuild-policy-dev",
+            "name_prefix": "",
+            "policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":[\"logs:CreateLogGroup\",\"logs:CreateLogStream\",\"logs:PutLogEvents\"],\"Effect\":\"Allow\",\"Resource\":\"*\"},{\"Action\":[\"s3:GetObject\",\"s3:PutObject\",\"s3:GetBucketLocation\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:s3:::ticket-pipeline-artifacts-dev-566533524321\",\"arn:aws:s3:::ticket-pipeline-artifacts-dev-566533524321/*\"]},{\"Action\":[\"ecr:GetAuthorizationToken\",\"ecr:BatchCheckLayerAvailability\",\"ecr:GetDownloadUrlForLayer\",\"ecr:BatchGetImage\",\"ecr:PutImage\",\"ecr:InitiateLayerUpload\",\"ecr:UploadLayerPart\",\"ecr:CompleteLayerUpload\"],\"Effect\":\"Allow\",\"Resource\":\"*\"},{\"Action\":[\"s3:PutObject\",\"s3:GetObject\",\"s3:ListBucket\",\"s3:DeleteObject\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:s3:::ticket-frontend-dev-566533524321\",\"arn:aws:s3:::ticket-frontend-dev-566533524321/*\"]},{\"Action\":[\"cloudfront:CreateInvalidation\"],\"Effect\":\"Allow\",\"Resource\":\"*\"}]}",
+            "role": "ticket-codebuild-dev"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "data.aws_caller_identity.current",
+            "module.cicd.aws_iam_role.codebuild",
+            "module.cicd.aws_s3_bucket.artifacts",
+            "module.frontend.aws_s3_bucket.frontend"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.cicd",
+      "mode": "managed",
+      "type": "aws_iam_role_policy",
+      "name": "pipeline",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "ticket-pipeline-dev:ticket-pipeline-policy-dev",
+            "name": "ticket-pipeline-policy-dev",
+            "name_prefix": "",
+            "policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":[\"s3:GetObject\",\"s3:PutObject\",\"s3:GetBucketLocation\",\"s3:ListBucket\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:s3:::ticket-pipeline-artifacts-dev-566533524321\",\"arn:aws:s3:::ticket-pipeline-artifacts-dev-566533524321/*\"]},{\"Action\":[\"codestar-connections:UseConnection\"],\"Effect\":\"Allow\",\"Resource\":\"arn:aws:codestar-connections:ap-northeast-2:566533524321:connection/e76da661-f08e-4bdb-b148-f40de5ad5b00\"},{\"Action\":[\"codebuild:BatchGetBuilds\",\"codebuild:StartBuild\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:codebuild:ap-northeast-2:566533524321:project/ticket-backend-build-dev\",\"arn:aws:codebuild:ap-northeast-2:566533524321:project/ticket-frontend-build-dev\"]},{\"Action\":[\"ecs:DescribeServices\",\"ecs:DescribeTaskDefinition\",\"ecs:DescribeTasks\",\"ecs:ListTasks\",\"ecs:RegisterTaskDefinition\",\"ecs:DeregisterTaskDefinition\",\"ecs:UpdateService\",\"ecs:TagResource\"],\"Effect\":\"Allow\",\"Resource\":\"*\"},{\"Action\":[\"iam:PassRole\"],\"Condition\":{\"StringLike\":{\"iam:PassedToService\":\"ecs-tasks.amazonaws.com\"}},\"Effect\":\"Allow\",\"Resource\":\"*\"}]}",
+            "role": "ticket-pipeline-dev"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "data.aws_caller_identity.current",
+            "module.alb.aws_lb.this",
+            "module.cicd.aws_codebuild_project.backend",
+            "module.cicd.aws_codebuild_project.frontend",
+            "module.cicd.aws_codestarconnections_connection.github",
+            "module.cicd.aws_iam_role.codebuild",
+            "module.cicd.aws_iam_role.pipeline",
+            "module.cicd.aws_s3_bucket.artifacts",
+            "module.ecr.aws_ecr_repository.backend",
+            "module.frontend.aws_cloudfront_distribution.this",
+            "module.frontend.aws_cloudfront_origin_access_control.s3",
+            "module.frontend.aws_s3_bucket.frontend",
+            "module.network.aws_security_group.alb",
+            "module.network.aws_subnet.public",
+            "module.network.aws_vpc.this",
+            "module.network.data.aws_availability_zones.available"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.cicd",
+      "mode": "managed",
+      "type": "aws_s3_bucket",
+      "name": "artifacts",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "acceleration_status": "",
+            "acl": null,
+            "arn": "arn:aws:s3:::ticket-pipeline-artifacts-dev-566533524321",
+            "bucket": "ticket-pipeline-artifacts-dev-566533524321",
+            "bucket_domain_name": "ticket-pipeline-artifacts-dev-566533524321.s3.amazonaws.com",
+            "bucket_prefix": "",
+            "bucket_regional_domain_name": "ticket-pipeline-artifacts-dev-566533524321.s3.ap-northeast-2.amazonaws.com",
+            "cors_rule": [],
+            "force_destroy": true,
+            "grant": [
+              {
+                "id": "942629644f60790d03881ec678d33687d558148ff84115d6022619e863291607",
+                "permissions": [
+                  "FULL_CONTROL"
+                ],
+                "type": "CanonicalUser",
+                "uri": ""
+              }
+            ],
+            "hosted_zone_id": "Z3W03O7B5YMIYP",
+            "id": "ticket-pipeline-artifacts-dev-566533524321",
+            "lifecycle_rule": [],
+            "logging": [],
+            "object_lock_configuration": [],
+            "object_lock_enabled": false,
+            "policy": "",
+            "region": "ap-northeast-2",
+            "replication_configuration": [],
+            "request_payer": "BucketOwner",
+            "server_side_encryption_configuration": [
+              {
+                "rule": [
+                  {
+                    "apply_server_side_encryption_by_default": [
+                      {
+                        "kms_master_key_id": "",
+                        "sse_algorithm": "AES256"
+                      }
+                    ],
+                    "bucket_key_enabled": false
+                  }
+                ]
+              }
+            ],
+            "tags": {
+              "Name": "ticket-pipeline-artifacts-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-pipeline-artifacts-dev",
+              "Project": "ticket"
+            },
+            "timeouts": null,
+            "versioning": [
+              {
+                "enabled": false,
+                "mfa_delete": false
+              }
+            ],
+            "website": [],
+            "website_domain": null,
+            "website_endpoint": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjM2MDAwMDAwMDAwMDAsInJlYWQiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "data.aws_caller_identity.current"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.cicd",
+      "mode": "managed",
+      "type": "aws_s3_bucket_public_access_block",
+      "name": "artifacts",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "block_public_acls": true,
+            "block_public_policy": true,
+            "bucket": "ticket-pipeline-artifacts-dev-566533524321",
+            "id": "ticket-pipeline-artifacts-dev-566533524321",
+            "ignore_public_acls": true,
+            "restrict_public_buckets": true
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "data.aws_caller_identity.current",
+            "module.cicd.aws_s3_bucket.artifacts"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.ecr",
+      "mode": "managed",
+      "type": "aws_ecr_lifecycle_policy",
+      "name": "backend",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "ticket-booking-backend-dev",
+            "policy": "{\"rules\":[{\"action\":{\"type\":\"expire\"},\"description\":\"최근 10개 이미지만 유지\",\"rulePriority\":1,\"selection\":{\"countNumber\":10,\"countType\":\"imageCountMoreThan\",\"tagStatus\":\"any\"}}]}",
+            "registry_id": "566533524321",
+            "repository": "ticket-booking-backend-dev"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.ecr.aws_ecr_repository.backend"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.ecr",
+      "mode": "managed",
+      "type": "aws_ecr_repository",
+      "name": "backend",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ecr:ap-northeast-2:566533524321:repository/ticket-booking-backend-dev",
+            "encryption_configuration": [
+              {
+                "encryption_type": "AES256",
+                "kms_key": ""
+              }
+            ],
+            "force_delete": true,
+            "id": "ticket-booking-backend-dev",
+            "image_scanning_configuration": [
+              {
+                "scan_on_push": true
+              }
+            ],
+            "image_tag_mutability": "MUTABLE",
+            "name": "ticket-booking-backend-dev",
+            "registry_id": "566533524321",
+            "repository_url": "566533524321.dkr.ecr.ap-northeast-2.amazonaws.com/ticket-booking-backend-dev",
+            "tags": {
+              "Name": "ticket-ecr-backend-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-ecr-backend-dev",
+              "Project": "ticket"
+            },
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiZGVsZXRlIjoxMjAwMDAwMDAwMDAwfX0="
+        }
+      ]
+    },
+    {
+      "module": "module.ecs",
+      "mode": "data",
+      "type": "aws_region",
+      "name": "current",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "description": "Asia Pacific (Seoul)",
+            "endpoint": "ec2.ap-northeast-2.amazonaws.com",
+            "id": "ap-northeast-2",
+            "name": "ap-northeast-2"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        }
+      ]
+    },
+    {
+      "module": "module.ecs",
+      "mode": "managed",
+      "type": "aws_appautoscaling_policy",
+      "name": "cpu",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "alarm_arns": [
+              "arn:aws:cloudwatch:ap-northeast-2:566533524321:alarm:TargetTracking-service/ticket-booking-dev/ticket-backend-dev-AlarmHigh-635405ec-5d9d-4e77-865f-7c6a5e761545",
+              "arn:aws:cloudwatch:ap-northeast-2:566533524321:alarm:TargetTracking-service/ticket-booking-dev/ticket-backend-dev-AlarmLow-ba0eaa69-d56a-49dc-8875-d622de918080"
+            ],
+            "arn": "arn:aws:autoscaling:ap-northeast-2:566533524321:scalingPolicy:08eee731-180a-49db-984e-23759e8113b0:resource/ecs/service/ticket-booking-dev/ticket-backend-dev:policyName/cpu-scale-dev",
+            "id": "cpu-scale-dev",
+            "name": "cpu-scale-dev",
+            "policy_type": "TargetTrackingScaling",
+            "resource_id": "service/ticket-booking-dev/ticket-backend-dev",
+            "scalable_dimension": "ecs:service:DesiredCount",
+            "service_namespace": "ecs",
+            "step_scaling_policy_configuration": [],
+            "target_tracking_scaling_policy_configuration": [
+              {
+                "customized_metric_specification": [],
+                "disable_scale_in": false,
+                "predefined_metric_specification": [
+                  {
+                    "predefined_metric_type": "ECSServiceAverageCPUUtilization",
+                    "resource_label": ""
+                  }
+                ],
+                "scale_in_cooldown": 0,
+                "scale_out_cooldown": 0,
+                "target_value": 60
+              }
+            ]
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.alb.aws_lb_target_group.backend",
+            "module.ecr.aws_ecr_repository.backend",
+            "module.ecs.aws_appautoscaling_target.ecs",
+            "module.ecs.aws_cloudwatch_log_group.backend",
+            "module.ecs.aws_ecs_cluster.this",
+            "module.ecs.aws_ecs_service.backend",
+            "module.ecs.aws_ecs_task_definition.backend",
+            "module.ecs.aws_iam_role.task_execution",
+            "module.ecs.data.aws_region.current",
+            "module.elasticache.aws_elasticache_replication_group.this",
+            "module.elasticache.aws_elasticache_subnet_group.this",
+            "module.network.aws_security_group.alb",
+            "module.network.aws_security_group.backend",
+            "module.network.aws_security_group.db",
+            "module.network.aws_security_group.redis",
+            "module.network.aws_subnet.private",
+            "module.network.aws_vpc.this",
+            "module.network.data.aws_availability_zones.available",
+            "module.rds.aws_db_instance.this",
+            "module.rds.aws_db_subnet_group.this",
+            "module.secrets.aws_secretsmanager_secret.db",
+            "module.secrets.random_password.db"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.ecs",
+      "mode": "managed",
+      "type": "aws_appautoscaling_target",
+      "name": "ecs",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:application-autoscaling:ap-northeast-2:566533524321:scalable-target/0ec508eee731180a49db984e23759e8113b0",
+            "id": "service/ticket-booking-dev/ticket-backend-dev",
+            "max_capacity": 10,
+            "min_capacity": 1,
+            "resource_id": "service/ticket-booking-dev/ticket-backend-dev",
+            "role_arn": "arn:aws:iam::566533524321:role/aws-service-role/ecs.application-autoscaling.amazonaws.com/AWSServiceRoleForApplicationAutoScaling_ECSService",
+            "scalable_dimension": "ecs:service:DesiredCount",
+            "service_namespace": "ecs",
+            "suspended_state": [
+              {
+                "dynamic_scaling_in_suspended": false,
+                "dynamic_scaling_out_suspended": false,
+                "scheduled_scaling_suspended": false
+              }
+            ],
+            "tags": {},
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Project": "ticket"
+            }
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.alb.aws_lb_target_group.backend",
+            "module.ecr.aws_ecr_repository.backend",
+            "module.ecs.aws_cloudwatch_log_group.backend",
+            "module.ecs.aws_ecs_cluster.this",
+            "module.ecs.aws_ecs_service.backend",
+            "module.ecs.aws_ecs_task_definition.backend",
+            "module.ecs.aws_iam_role.task_execution",
+            "module.ecs.data.aws_region.current",
+            "module.elasticache.aws_elasticache_replication_group.this",
+            "module.elasticache.aws_elasticache_subnet_group.this",
+            "module.network.aws_security_group.alb",
+            "module.network.aws_security_group.backend",
+            "module.network.aws_security_group.db",
+            "module.network.aws_security_group.redis",
+            "module.network.aws_subnet.private",
+            "module.network.aws_vpc.this",
+            "module.network.data.aws_availability_zones.available",
+            "module.rds.aws_db_instance.this",
+            "module.rds.aws_db_subnet_group.this",
+            "module.secrets.aws_secretsmanager_secret.db",
+            "module.secrets.random_password.db"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.ecs",
+      "mode": "managed",
+      "type": "aws_cloudwatch_log_group",
+      "name": "backend",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:logs:ap-northeast-2:566533524321:log-group:/ecs/ticket-booking-dev",
+            "id": "/ecs/ticket-booking-dev",
+            "kms_key_id": "",
+            "log_group_class": "STANDARD",
+            "name": "/ecs/ticket-booking-dev",
+            "name_prefix": "",
+            "retention_in_days": 14,
+            "skip_destroy": false,
+            "tags": {
+              "Name": "ticket-logs-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-logs-dev",
+              "Project": "ticket"
+            }
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA=="
+        }
+      ]
+    },
+    {
+      "module": "module.ecs",
+      "mode": "managed",
+      "type": "aws_ecs_cluster",
+      "name": "this",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ecs:ap-northeast-2:566533524321:cluster/ticket-booking-dev",
+            "configuration": [],
+            "id": "arn:aws:ecs:ap-northeast-2:566533524321:cluster/ticket-booking-dev",
+            "name": "ticket-booking-dev",
+            "service_connect_defaults": [],
+            "setting": [
+              {
+                "name": "containerInsights",
+                "value": "enabled"
+              }
+            ],
+            "tags": {
+              "Name": "ticket-ecs-cluster-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-ecs-cluster-dev",
+              "Project": "ticket"
+            }
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA=="
+        }
+      ]
+    },
+    {
+      "module": "module.ecs",
+      "mode": "managed",
+      "type": "aws_ecs_service",
+      "name": "backend",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "alarms": [],
+            "availability_zone_rebalancing": "DISABLED",
+            "capacity_provider_strategy": [],
+            "cluster": "arn:aws:ecs:ap-northeast-2:566533524321:cluster/ticket-booking-dev",
+            "deployment_circuit_breaker": [
+              {
+                "enable": false,
+                "rollback": false
+              }
+            ],
+            "deployment_controller": [
+              {
+                "type": "ECS"
+              }
+            ],
+            "deployment_maximum_percent": 200,
+            "deployment_minimum_healthy_percent": 100,
+            "desired_count": 1,
+            "enable_ecs_managed_tags": false,
+            "enable_execute_command": false,
+            "force_delete": null,
+            "force_new_deployment": null,
+            "health_check_grace_period_seconds": 0,
+            "iam_role": "/aws-service-role/ecs.amazonaws.com/AWSServiceRoleForECS",
+            "id": "arn:aws:ecs:ap-northeast-2:566533524321:service/ticket-booking-dev/ticket-backend-dev",
+            "launch_type": "FARGATE",
+            "load_balancer": [
+              {
+                "container_name": "backend",
+                "container_port": 4000,
+                "elb_name": "",
+                "target_group_arn": "arn:aws:elasticloadbalancing:ap-northeast-2:566533524321:targetgroup/ticket-tg-dev/4a1d8f6d957e98bf"
+              }
+            ],
+            "name": "ticket-backend-dev",
+            "network_configuration": [
+              {
+                "assign_public_ip": false,
+                "security_groups": [
+                  "sg-06d5de844d11a591d"
+                ],
+                "subnets": [
+                  "subnet-08f086e61a492b87a",
+                  "subnet-0e6d242f99d39e0de"
+                ]
+              }
+            ],
+            "ordered_placement_strategy": [],
+            "placement_constraints": [],
+            "platform_version": "LATEST",
+            "propagate_tags": "NONE",
+            "scheduling_strategy": "REPLICA",
+            "service_connect_configuration": [],
+            "service_registries": [],
+            "tags": {
+              "Name": "ticket-backend-service-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-backend-service-dev",
+              "Project": "ticket"
+            },
+            "task_definition": "arn:aws:ecs:ap-northeast-2:566533524321:task-definition/ticket-backend-dev:4",
+            "timeouts": null,
+            "triggers": {},
+            "volume_configuration": [],
+            "vpc_lattice_configurations": [],
+            "wait_for_steady_state": false
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "module.alb.aws_lb_target_group.backend",
+            "module.ecr.aws_ecr_repository.backend",
+            "module.ecs.aws_cloudwatch_log_group.backend",
+            "module.ecs.aws_ecs_cluster.this",
+            "module.ecs.aws_ecs_task_definition.backend",
+            "module.ecs.aws_iam_role.task_execution",
+            "module.ecs.data.aws_region.current",
+            "module.elasticache.aws_elasticache_replication_group.this",
+            "module.elasticache.aws_elasticache_subnet_group.this",
+            "module.network.aws_security_group.alb",
+            "module.network.aws_security_group.backend",
+            "module.network.aws_security_group.db",
+            "module.network.aws_security_group.redis",
+            "module.network.aws_subnet.private",
+            "module.network.aws_vpc.this",
+            "module.network.data.aws_availability_zones.available",
+            "module.rds.aws_db_instance.this",
+            "module.rds.aws_db_subnet_group.this",
+            "module.secrets.aws_secretsmanager_secret.db",
+            "module.secrets.random_password.db"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.ecs",
+      "mode": "managed",
+      "type": "aws_ecs_task_definition",
+      "name": "backend",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ecs:ap-northeast-2:566533524321:task-definition/ticket-backend-dev:1",
+            "arn_without_revision": "arn:aws:ecs:ap-northeast-2:566533524321:task-definition/ticket-backend-dev",
+            "container_definitions": "[{\"environment\":[{\"name\":\"APP_ENV\",\"value\":\"dev\"},{\"name\":\"CONCURRENT_PROCESSING_LIMIT\",\"value\":\"500\"},{\"name\":\"DB_HOST\",\"value\":\"ticket-booking-dev.cgco5zwxudtk.ap-northeast-2.rds.amazonaws.com\"},{\"name\":\"DB_NAME\",\"value\":\"ticket_booking\"},{\"name\":\"DB_USER\",\"value\":\"ticket\"},{\"name\":\"NODE_ENV\",\"value\":\"production\"},{\"name\":\"PORT\",\"value\":\"4000\"},{\"name\":\"REDIS_HOST\",\"value\":\"ticket-redis-dev.ip70gh.ng.0001.apn2.cache.amazonaws.com\"},{\"name\":\"SEAT_LOCK_TTL_SECONDS\",\"value\":\"300\"},{\"name\":\"WS_PORT\",\"value\":\"4001\"}],\"essential\":true,\"healthCheck\":{\"command\":[\"CMD-SHELL\",\"wget -q -O - http://localhost:4000/health || exit 1\"],\"interval\":30,\"retries\":3,\"startPeriod\":60,\"timeout\":5},\"image\":\"566533524321.dkr.ecr.ap-northeast-2.amazonaws.com/ticket-booking-backend-dev:latest\",\"logConfiguration\":{\"logDriver\":\"awslogs\",\"options\":{\"awslogs-group\":\"/ecs/ticket-booking-dev\",\"awslogs-region\":\"ap-northeast-2\",\"awslogs-stream-prefix\":\"backend\"}},\"mountPoints\":[],\"name\":\"backend\",\"portMappings\":[{\"containerPort\":4000,\"hostPort\":4000,\"protocol\":\"tcp\"}],\"secrets\":[{\"name\":\"DB_PASSWORD\",\"valueFrom\":\"arn:aws:secretsmanager:ap-northeast-2:566533524321:secret:ticket/db/dev/master-JHYmrG:password::\"}],\"systemControls\":[],\"volumesFrom\":[]}]",
+            "cpu": "512",
+            "enable_fault_injection": false,
+            "ephemeral_storage": [],
+            "execution_role_arn": "arn:aws:iam::566533524321:role/ticket-ecs-exec-dev",
+            "family": "ticket-backend-dev",
+            "id": "ticket-backend-dev",
+            "inference_accelerator": [],
+            "ipc_mode": "",
+            "memory": "1024",
+            "network_mode": "awsvpc",
+            "pid_mode": "",
+            "placement_constraints": [],
+            "proxy_configuration": [],
+            "requires_compatibilities": [
+              "FARGATE"
+            ],
+            "revision": 1,
+            "runtime_platform": [],
+            "skip_destroy": false,
+            "tags": {
+              "Name": "ticket-backend-taskdef-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-backend-taskdef-dev",
+              "Project": "ticket"
+            },
+            "task_role_arn": "",
+            "track_latest": false,
+            "volume": []
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjEifQ==",
+          "dependencies": [
+            "module.ecr.aws_ecr_repository.backend",
+            "module.ecs.aws_cloudwatch_log_group.backend",
+            "module.ecs.aws_iam_role.task_execution",
+            "module.ecs.data.aws_region.current",
+            "module.elasticache.aws_elasticache_replication_group.this",
+            "module.elasticache.aws_elasticache_subnet_group.this",
+            "module.network.aws_security_group.alb",
+            "module.network.aws_security_group.backend",
+            "module.network.aws_security_group.db",
+            "module.network.aws_security_group.redis",
+            "module.network.aws_subnet.private",
+            "module.network.aws_vpc.this",
+            "module.network.data.aws_availability_zones.available",
+            "module.rds.aws_db_instance.this",
+            "module.rds.aws_db_subnet_group.this",
+            "module.secrets.aws_secretsmanager_secret.db",
+            "module.secrets.random_password.db"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.ecs",
+      "mode": "managed",
+      "type": "aws_iam_role",
+      "name": "task_execution",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:iam::566533524321:role/ticket-ecs-exec-dev",
+            "assume_role_policy": "{\"Statement\":[{\"Action\":\"sts:AssumeRole\",\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"ecs-tasks.amazonaws.com\"}}],\"Version\":\"2012-10-17\"}",
+            "create_date": "2026-09-11T06:38:14Z",
+            "description": "",
+            "force_detach_policies": false,
+            "id": "ticket-ecs-exec-dev",
+            "inline_policy": [
+              {
+                "name": "ticket-ecs-secrets-dev",
+                "policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":[\"secretsmanager:GetSecretValue\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:secretsmanager:ap-northeast-2:566533524321:secret:ticket/db/dev/master-JHYmrG\"]}]}"
+              }
+            ],
+            "managed_policy_arns": [
+              "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"
+            ],
+            "max_session_duration": 3600,
+            "name": "ticket-ecs-exec-dev",
+            "name_prefix": "",
+            "path": "/",
+            "permissions_boundary": "",
+            "tags": {
+              "Name": "ticket-ecs-exec-role-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-ecs-exec-role-dev",
+              "Project": "ticket"
+            },
+            "unique_id": "AROAYH2AHRNQ2RELCQBT3"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA=="
+        }
+      ]
+    },
+    {
+      "module": "module.ecs",
+      "mode": "managed",
+      "type": "aws_iam_role_policy",
+      "name": "secrets",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "index_key": 0,
+          "schema_version": 0,
+          "attributes": {
+            "id": "ticket-ecs-exec-dev:ticket-ecs-secrets-dev",
+            "name": "ticket-ecs-secrets-dev",
+            "name_prefix": "",
+            "policy": "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Action\":[\"secretsmanager:GetSecretValue\"],\"Effect\":\"Allow\",\"Resource\":[\"arn:aws:secretsmanager:ap-northeast-2:566533524321:secret:ticket/db/dev/master-JHYmrG\"]}]}",
+            "role": "ticket-ecs-exec-dev"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.ecs.aws_iam_role.task_execution",
+            "module.secrets.aws_secretsmanager_secret.db"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.ecs",
+      "mode": "managed",
+      "type": "aws_iam_role_policy_attachment",
+      "name": "exec",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "id": "ticket-ecs-exec-dev-20260911063816033100000003",
+            "policy_arn": "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
+            "role": "ticket-ecs-exec-dev"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.ecs.aws_iam_role.task_execution"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.elasticache",
+      "mode": "managed",
+      "type": "aws_elasticache_replication_group",
+      "name": "this",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 2,
+          "attributes": {
+            "apply_immediately": null,
+            "arn": "arn:aws:elasticache:ap-northeast-2:566533524321:replicationgroup:ticket-redis-dev",
+            "at_rest_encryption_enabled": "false",
+            "auth_token": "",
+            "auth_token_update_strategy": "ROTATE",
+            "auto_minor_version_upgrade": "true",
+            "automatic_failover_enabled": false,
+            "cluster_enabled": false,
+            "cluster_mode": "disabled",
+            "configuration_endpoint_address": null,
+            "data_tiering_enabled": false,
+            "description": "Ticket booking queue \u0026 seat lock (dev)",
+            "engine": "redis",
+            "engine_version": "7.0",
+            "engine_version_actual": "7.0.7",
+            "final_snapshot_identifier": null,
+            "global_replication_group_id": null,
+            "id": "ticket-redis-dev",
+            "ip_discovery": "ipv4",
+            "kms_key_id": "",
+            "log_delivery_configuration": [],
+            "maintenance_window": "wed:04:30-wed:05:30",
+            "member_clusters": [
+              "ticket-redis-dev-001"
+            ],
+            "multi_az_enabled": false,
+            "network_type": "ipv4",
+            "node_type": "cache.t3.micro",
+            "notification_topic_arn": null,
+            "num_cache_clusters": 1,
+            "num_node_groups": 1,
+            "parameter_group_name": "default.redis7",
+            "port": 6379,
+            "preferred_cache_cluster_azs": null,
+            "primary_endpoint_address": "ticket-redis-dev.ip70gh.ng.0001.apn2.cache.amazonaws.com",
+            "reader_endpoint_address": "ticket-redis-dev-ro.ip70gh.ng.0001.apn2.cache.amazonaws.com",
+            "replicas_per_node_group": 0,
+            "replication_group_id": "ticket-redis-dev",
+            "security_group_ids": [
+              "sg-024bcfe6d45dd616c"
+            ],
+            "security_group_names": [],
+            "snapshot_arns": null,
+            "snapshot_name": null,
+            "snapshot_retention_limit": 1,
+            "snapshot_window": "00:30-01:30",
+            "subnet_group_name": "ticket-redis-dev",
+            "tags": {
+              "Environment": "dev",
+              "Name": "ticket-redis-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-redis-dev",
+              "Project": "ticket"
+            },
+            "timeouts": null,
+            "transit_encryption_enabled": false,
+            "transit_encryption_mode": "",
+            "user_group_ids": []
+          },
+          "sensitive_attributes": [
+            [
+              {
+                "type": "get_attr",
+                "value": "auth_token"
+              }
+            ]
+          ],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozNjAwMDAwMDAwMDAwLCJkZWxldGUiOjI3MDAwMDAwMDAwMDAsInVwZGF0ZSI6MjQwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMiJ9",
+          "dependencies": [
+            "module.elasticache.aws_elasticache_subnet_group.this",
+            "module.network.aws_security_group.alb",
+            "module.network.aws_security_group.backend",
+            "module.network.aws_security_group.redis",
+            "module.network.aws_subnet.private",
+            "module.network.aws_vpc.this",
+            "module.network.data.aws_availability_zones.available"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.elasticache",
+      "mode": "managed",
+      "type": "aws_elasticache_subnet_group",
+      "name": "this",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:elasticache:ap-northeast-2:566533524321:subnetgroup:ticket-redis-dev",
+            "description": "Managed by Terraform",
+            "id": "ticket-redis-dev",
+            "name": "ticket-redis-dev",
+            "subnet_ids": [
+              "subnet-08f086e61a492b87a",
+              "subnet-0e6d242f99d39e0de"
+            ],
+            "tags": {
+              "Name": "ticket-redis-subnet-group-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-redis-subnet-group-dev",
+              "Project": "ticket"
+            },
+            "vpc_id": "vpc-038bacf337624c780"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.network.aws_subnet.private",
+            "module.network.aws_vpc.this",
+            "module.network.data.aws_availability_zones.available"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.frontend",
+      "mode": "managed",
+      "type": "aws_cloudfront_distribution",
+      "name": "this",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "aliases": null,
+            "arn": "arn:aws:cloudfront::566533524321:distribution/EDUWCB9UBSTDS",
+            "caller_reference": "terraform-20260911080629972200000001",
+            "comment": "ticket frontend dev",
+            "continuous_deployment_policy_id": "",
+            "custom_error_response": [
+              {
+                "error_caching_min_ttl": 10,
+                "error_code": 403,
+                "response_code": 200,
+                "response_page_path": "/index.html"
+              }
+            ],
+            "default_cache_behavior": [
+              {
+                "allowed_methods": [
+                  "GET",
+                  "HEAD",
+                  "OPTIONS"
+                ],
+                "cache_policy_id": "",
+                "cached_methods": [
+                  "GET",
+                  "HEAD"
+                ],
+                "compress": true,
+                "default_ttl": 3600,
+                "field_level_encryption_id": "",
+                "forwarded_values": [
+                  {
+                    "cookies": [
+                      {
+                        "forward": "none",
+                        "whitelisted_names": []
+                      }
+                    ],
+                    "headers": [],
+                    "query_string": false,
+                    "query_string_cache_keys": []
+                  }
+                ],
+                "function_association": [],
+                "grpc_config": [
+                  {
+                    "enabled": false
+                  }
+                ],
+                "lambda_function_association": [],
+                "max_ttl": 86400,
+                "min_ttl": 0,
+                "origin_request_policy_id": "",
+                "realtime_log_config_arn": "",
+                "response_headers_policy_id": "",
+                "smooth_streaming": false,
+                "target_origin_id": "s3-frontend",
+                "trusted_key_groups": [],
+                "trusted_signers": [],
+                "viewer_protocol_policy": "redirect-to-https"
+              }
+            ],
+            "default_root_object": "index.html",
+            "domain_name": "d351pu22mbh02k.cloudfront.net",
+            "enabled": true,
+            "etag": "E23ZP02F085DFQ",
+            "hosted_zone_id": "Z2FDTNDATAQYW2",
+            "http_version": "http2",
+            "id": "EDUWCB9UBSTDS",
+            "in_progress_validation_batches": 0,
+            "is_ipv6_enabled": false,
+            "last_modified_time": "2026-09-11 08:06:30.185 +0000 UTC",
+            "logging_config": [],
+            "ordered_cache_behavior": [
+              {
+                "allowed_methods": [
+                  "DELETE",
+                  "GET",
+                  "HEAD",
+                  "OPTIONS",
+                  "PATCH",
+                  "POST",
+                  "PUT"
+                ],
+                "cache_policy_id": "",
+                "cached_methods": [
+                  "GET",
+                  "HEAD"
+                ],
+                "compress": true,
+                "default_ttl": 0,
+                "field_level_encryption_id": "",
+                "forwarded_values": [
+                  {
+                    "cookies": [
+                      {
+                        "forward": "all",
+                        "whitelisted_names": null
+                      }
+                    ],
+                    "headers": [
+                      "*"
+                    ],
+                    "query_string": true,
+                    "query_string_cache_keys": []
+                  }
+                ],
+                "function_association": [],
+                "grpc_config": [
+                  {
+                    "enabled": false
+                  }
+                ],
+                "lambda_function_association": [],
+                "max_ttl": 0,
+                "min_ttl": 0,
+                "origin_request_policy_id": "",
+                "path_pattern": "/api/*",
+                "realtime_log_config_arn": "",
+                "response_headers_policy_id": "",
+                "smooth_streaming": false,
+                "target_origin_id": "alb-backend",
+                "trusted_key_groups": null,
+                "trusted_signers": null,
+                "viewer_protocol_policy": "redirect-to-https"
+              },
+              {
+                "allowed_methods": [
+                  "GET",
+                  "HEAD",
+                  "OPTIONS"
+                ],
+                "cache_policy_id": "",
+                "cached_methods": [
+                  "GET",
+                  "HEAD"
+                ],
+                "compress": false,
+                "default_ttl": 0,
+                "field_level_encryption_id": "",
+                "forwarded_values": [
+                  {
+                    "cookies": [
+                      {
+                        "forward": "none",
+                        "whitelisted_names": null
+                      }
+                    ],
+                    "headers": [],
+                    "query_string": false,
+                    "query_string_cache_keys": []
+                  }
+                ],
+                "function_association": [],
+                "grpc_config": [
+                  {
+                    "enabled": false
+                  }
+                ],
+                "lambda_function_association": [],
+                "max_ttl": 0,
+                "min_ttl": 0,
+                "origin_request_policy_id": "",
+                "path_pattern": "/health",
+                "realtime_log_config_arn": "",
+                "response_headers_policy_id": "",
+                "smooth_streaming": false,
+                "target_origin_id": "alb-backend",
+                "trusted_key_groups": null,
+                "trusted_signers": null,
+                "viewer_protocol_policy": "redirect-to-https"
+              }
+            ],
+            "origin": [
+              {
+                "connection_attempts": 3,
+                "connection_timeout": 10,
+                "custom_header": [],
+                "custom_origin_config": [
+                  {
+                    "http_port": 80,
+                    "https_port": 443,
+                    "origin_keepalive_timeout": 5,
+                    "origin_protocol_policy": "http-only",
+                    "origin_read_timeout": 30,
+                    "origin_ssl_protocols": [
+                      "TLSv1.2"
+                    ]
+                  }
+                ],
+                "domain_name": "ticket-alb-dev-779194605.ap-northeast-2.elb.amazonaws.com",
+                "origin_access_control_id": "",
+                "origin_id": "alb-backend",
+                "origin_path": "",
+                "origin_shield": [],
+                "s3_origin_config": [],
+                "vpc_origin_config": []
+              },
+              {
+                "connection_attempts": 3,
+                "connection_timeout": 10,
+                "custom_header": [],
+                "custom_origin_config": [],
+                "domain_name": "ticket-frontend-dev-566533524321.s3.ap-northeast-2.amazonaws.com",
+                "origin_access_control_id": "EN352TYOAA0QU",
+                "origin_id": "s3-frontend",
+                "origin_path": "",
+                "origin_shield": [],
+                "s3_origin_config": [],
+                "vpc_origin_config": []
+              }
+            ],
+            "origin_group": [],
+            "price_class": "PriceClass_200",
+            "restrictions": [
+              {
+                "geo_restriction": [
+                  {
+                    "locations": [],
+                    "restriction_type": "none"
+                  }
+                ]
+              }
+            ],
+            "retain_on_delete": false,
+            "staging": false,
+            "status": "Deployed",
+            "tags": {
+              "Name": "ticket-cloudfront-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-cloudfront-dev",
+              "Project": "ticket"
+            },
+            "trusted_key_groups": [
+              {
+                "enabled": false,
+                "items": []
+              }
+            ],
+            "trusted_signers": [
+              {
+                "enabled": false,
+                "items": []
+              }
+            ],
+            "viewer_certificate": [
+              {
+                "acm_certificate_arn": "",
+                "cloudfront_default_certificate": true,
+                "iam_certificate_id": "",
+                "minimum_protocol_version": "TLSv1",
+                "ssl_support_method": ""
+              }
+            ],
+            "wait_for_deployment": true,
+            "web_acl_id": ""
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjEifQ==",
+          "dependencies": [
+            "data.aws_caller_identity.current",
+            "module.alb.aws_lb.this",
+            "module.frontend.aws_cloudfront_origin_access_control.s3",
+            "module.frontend.aws_s3_bucket.frontend",
+            "module.network.aws_security_group.alb",
+            "module.network.aws_subnet.public",
+            "module.network.aws_vpc.this",
+            "module.network.data.aws_availability_zones.available"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.frontend",
+      "mode": "managed",
+      "type": "aws_cloudfront_origin_access_control",
+      "name": "s3",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:cloudfront::566533524321:origin-access-control/EN352TYOAA0QU",
+            "description": "Managed by Terraform",
+            "etag": "ETVPDKIKX0DER",
+            "id": "EN352TYOAA0QU",
+            "name": "ticket-oac-dev",
+            "origin_access_control_origin_type": "s3",
+            "signing_behavior": "always",
+            "signing_protocol": "sigv4"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA=="
+        }
+      ]
+    },
+    {
+      "module": "module.frontend",
+      "mode": "managed",
+      "type": "aws_s3_bucket",
+      "name": "frontend",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "acceleration_status": "",
+            "acl": null,
+            "arn": "arn:aws:s3:::ticket-frontend-dev-566533524321",
+            "bucket": "ticket-frontend-dev-566533524321",
+            "bucket_domain_name": "ticket-frontend-dev-566533524321.s3.amazonaws.com",
+            "bucket_prefix": "",
+            "bucket_regional_domain_name": "ticket-frontend-dev-566533524321.s3.ap-northeast-2.amazonaws.com",
+            "cors_rule": [],
+            "force_destroy": true,
+            "grant": [
+              {
+                "id": "942629644f60790d03881ec678d33687d558148ff84115d6022619e863291607",
+                "permissions": [
+                  "FULL_CONTROL"
+                ],
+                "type": "CanonicalUser",
+                "uri": ""
+              }
+            ],
+            "hosted_zone_id": "Z3W03O7B5YMIYP",
+            "id": "ticket-frontend-dev-566533524321",
+            "lifecycle_rule": [],
+            "logging": [],
+            "object_lock_configuration": [],
+            "object_lock_enabled": false,
+            "policy": "",
+            "region": "ap-northeast-2",
+            "replication_configuration": [],
+            "request_payer": "BucketOwner",
+            "server_side_encryption_configuration": [
+              {
+                "rule": [
+                  {
+                    "apply_server_side_encryption_by_default": [
+                      {
+                        "kms_master_key_id": "",
+                        "sse_algorithm": "AES256"
+                      }
+                    ],
+                    "bucket_key_enabled": false
+                  }
+                ]
+              }
+            ],
+            "tags": {
+              "Name": "ticket-frontend-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-frontend-dev",
+              "Project": "ticket"
+            },
+            "timeouts": null,
+            "versioning": [
+              {
+                "enabled": false,
+                "mfa_delete": false
+              }
+            ],
+            "website": [],
+            "website_domain": null,
+            "website_endpoint": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjM2MDAwMDAwMDAwMDAsInJlYWQiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "data.aws_caller_identity.current"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.frontend",
+      "mode": "managed",
+      "type": "aws_s3_bucket_policy",
+      "name": "frontend",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "bucket": "ticket-frontend-dev-566533524321",
+            "id": "ticket-frontend-dev-566533524321",
+            "policy": "{\"Statement\":[{\"Action\":\"s3:GetObject\",\"Condition\":{\"StringEquals\":{\"AWS:SourceArn\":\"arn:aws:cloudfront::566533524321:distribution/EDUWCB9UBSTDS\"}},\"Effect\":\"Allow\",\"Principal\":{\"Service\":\"cloudfront.amazonaws.com\"},\"Resource\":\"arn:aws:s3:::ticket-frontend-dev-566533524321/*\",\"Sid\":\"AllowCloudFrontOAC\"}],\"Version\":\"2012-10-17\"}"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "data.aws_caller_identity.current",
+            "module.alb.aws_lb.this",
+            "module.frontend.aws_cloudfront_distribution.this",
+            "module.frontend.aws_cloudfront_origin_access_control.s3",
+            "module.frontend.aws_s3_bucket.frontend",
+            "module.network.aws_security_group.alb",
+            "module.network.aws_subnet.public",
+            "module.network.aws_vpc.this",
+            "module.network.data.aws_availability_zones.available"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.frontend",
+      "mode": "managed",
+      "type": "aws_s3_bucket_public_access_block",
+      "name": "frontend",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "block_public_acls": true,
+            "block_public_policy": true,
+            "bucket": "ticket-frontend-dev-566533524321",
+            "id": "ticket-frontend-dev-566533524321",
+            "ignore_public_acls": true,
+            "restrict_public_buckets": true
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "data.aws_caller_identity.current",
+            "module.frontend.aws_s3_bucket.frontend"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.network",
+      "mode": "data",
+      "type": "aws_availability_zones",
+      "name": "available",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "all_availability_zones": null,
+            "exclude_names": null,
+            "exclude_zone_ids": null,
+            "filter": null,
+            "group_names": [
+              "ap-northeast-2-zg-1"
+            ],
+            "id": "ap-northeast-2",
+            "names": [
+              "ap-northeast-2a",
+              "ap-northeast-2b",
+              "ap-northeast-2c",
+              "ap-northeast-2d"
+            ],
+            "state": "available",
+            "timeouts": null,
+            "zone_ids": [
+              "apne2-az1",
+              "apne2-az2",
+              "apne2-az3",
+              "apne2-az4"
+            ]
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        }
+      ]
+    },
+    {
+      "module": "module.network",
+      "mode": "managed",
+      "type": "aws_eip",
+      "name": "nat",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "address": null,
+            "allocation_id": "eipalloc-07c1f76aed581ef32",
+            "arn": "arn:aws:ec2:ap-northeast-2:566533524321:elastic-ip/eipalloc-07c1f76aed581ef32",
+            "associate_with_private_ip": null,
+            "association_id": "eipassoc-0a7bb392c390172ae",
+            "carrier_ip": "",
+            "customer_owned_ip": "",
+            "customer_owned_ipv4_pool": "",
+            "domain": "vpc",
+            "id": "eipalloc-07c1f76aed581ef32",
+            "instance": "",
+            "ipam_pool_id": null,
+            "network_border_group": "ap-northeast-2",
+            "network_interface": "eni-0e4a9e1ecf7dc958c",
+            "private_dns": "ip-10-0-0-108.ap-northeast-2.compute.internal",
+            "private_ip": "10.0.0.108",
+            "ptr_record": "",
+            "public_dns": "ec2-3-38-54-174.ap-northeast-2.compute.amazonaws.com",
+            "public_ip": "3.38.54.174",
+            "public_ipv4_pool": "amazon",
+            "tags": {
+              "Name": "ticket-nat-eip-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-nat-eip-dev",
+              "Project": "ticket"
+            },
+            "timeouts": null,
+            "vpc": true
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiZGVsZXRlIjoxODAwMDAwMDAwMDAsInJlYWQiOjkwMDAwMDAwMDAwMCwidXBkYXRlIjozMDAwMDAwMDAwMDB9fQ=="
+        }
+      ]
+    },
+    {
+      "module": "module.network",
+      "mode": "managed",
+      "type": "aws_internet_gateway",
+      "name": "this",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ec2:ap-northeast-2:566533524321:internet-gateway/igw-0a07462ef1a7fdd79",
+            "id": "igw-0a07462ef1a7fdd79",
+            "owner_id": "566533524321",
+            "tags": {
+              "Name": "ticket-igw-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-igw-dev",
+              "Project": "ticket"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-038bacf337624c780"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInVwZGF0ZSI6MTIwMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "module.network.aws_vpc.this"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.network",
+      "mode": "managed",
+      "type": "aws_nat_gateway",
+      "name": "this",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "allocation_id": "eipalloc-07c1f76aed581ef32",
+            "association_id": "eipassoc-0a7bb392c390172ae",
+            "connectivity_type": "public",
+            "id": "nat-01487eca03980a3f5",
+            "network_interface_id": "eni-0e4a9e1ecf7dc958c",
+            "private_ip": "10.0.0.108",
+            "public_ip": "3.38.54.174",
+            "secondary_allocation_ids": [],
+            "secondary_private_ip_address_count": 0,
+            "secondary_private_ip_addresses": [],
+            "subnet_id": "subnet-044fa2a8b38eb1dc7",
+            "tags": {
+              "Name": "ticket-nat-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-nat-dev",
+              "Project": "ticket"
+            },
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTgwMDAwMDAwMDAwMCwidXBkYXRlIjo2MDAwMDAwMDAwMDB9fQ==",
+          "dependencies": [
+            "module.network.aws_eip.nat",
+            "module.network.aws_subnet.public",
+            "module.network.aws_vpc.this",
+            "module.network.data.aws_availability_zones.available"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.network",
+      "mode": "managed",
+      "type": "aws_route_table",
+      "name": "private",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ec2:ap-northeast-2:566533524321:route-table/rtb-082169980cb24b06b",
+            "id": "rtb-082169980cb24b06b",
+            "owner_id": "566533524321",
+            "propagating_vgws": [],
+            "route": [
+              {
+                "carrier_gateway_id": "",
+                "cidr_block": "0.0.0.0/0",
+                "core_network_arn": "",
+                "destination_prefix_list_id": "",
+                "egress_only_gateway_id": "",
+                "gateway_id": "",
+                "ipv6_cidr_block": "",
+                "local_gateway_id": "",
+                "nat_gateway_id": "nat-01487eca03980a3f5",
+                "network_interface_id": "",
+                "transit_gateway_id": "",
+                "vpc_endpoint_id": "",
+                "vpc_peering_connection_id": ""
+              }
+            ],
+            "tags": {
+              "Name": "ticket-rt-private-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-rt-private-dev",
+              "Project": "ticket"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-038bacf337624c780"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAsImRlbGV0ZSI6MzAwMDAwMDAwMDAwLCJ1cGRhdGUiOjEyMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "module.network.aws_eip.nat",
+            "module.network.aws_nat_gateway.this",
+            "module.network.aws_subnet.public",
+            "module.network.aws_vpc.this",
+            "module.network.data.aws_availability_zones.available"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.network",
+      "mode": "managed",
+      "type": "aws_route_table",
+      "name": "public",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:ec2:ap-northeast-2:566533524321:route-table/rtb-0c1d2d6dcc7a38a51",
+            "id": "rtb-0c1d2d6dcc7a38a51",
+            "owner_id": "566533524321",
+            "propagating_vgws": [],
+            "route": [
+              {
+                "carrier_gateway_id": "",
+                "cidr_block": "0.0.0.0/0",
+                "core_network_arn": "",
+                "destination_prefix_list_id": "",
+                "egress_only_gateway_id": "",
+                "gateway_id": "igw-0a07462ef1a7fdd79",
+                "ipv6_cidr_block": "",
+                "local_gateway_id": "",
+                "nat_gateway_id": "",
+                "network_interface_id": "",
+                "transit_gateway_id": "",
+                "vpc_endpoint_id": "",
+                "vpc_peering_connection_id": ""
+              }
+            ],
+            "tags": {
+              "Name": "ticket-rt-public-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-rt-public-dev",
+              "Project": "ticket"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-038bacf337624c780"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAsImRlbGV0ZSI6MzAwMDAwMDAwMDAwLCJ1cGRhdGUiOjEyMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "module.network.aws_internet_gateway.this",
+            "module.network.aws_vpc.this"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.network",
+      "mode": "managed",
+      "type": "aws_route_table_association",
+      "name": "private",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "index_key": 0,
+          "schema_version": 0,
+          "attributes": {
+            "gateway_id": "",
+            "id": "rtbassoc-05621d2c3879cd945",
+            "route_table_id": "rtb-082169980cb24b06b",
+            "subnet_id": "subnet-0e6d242f99d39e0de",
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAsImRlbGV0ZSI6MzAwMDAwMDAwMDAwLCJ1cGRhdGUiOjEyMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "module.network.aws_eip.nat",
+            "module.network.aws_nat_gateway.this",
+            "module.network.aws_route_table.private",
+            "module.network.aws_subnet.private",
+            "module.network.aws_subnet.public",
+            "module.network.aws_vpc.this",
+            "module.network.data.aws_availability_zones.available"
+          ]
+        },
+        {
+          "index_key": 1,
+          "schema_version": 0,
+          "attributes": {
+            "gateway_id": "",
+            "id": "rtbassoc-0e2a36ac7abe4650c",
+            "route_table_id": "rtb-082169980cb24b06b",
+            "subnet_id": "subnet-08f086e61a492b87a",
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAsImRlbGV0ZSI6MzAwMDAwMDAwMDAwLCJ1cGRhdGUiOjEyMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "module.network.aws_eip.nat",
+            "module.network.aws_nat_gateway.this",
+            "module.network.aws_route_table.private",
+            "module.network.aws_subnet.private",
+            "module.network.aws_subnet.public",
+            "module.network.aws_vpc.this",
+            "module.network.data.aws_availability_zones.available"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.network",
+      "mode": "managed",
+      "type": "aws_route_table_association",
+      "name": "public",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "index_key": 0,
+          "schema_version": 0,
+          "attributes": {
+            "gateway_id": "",
+            "id": "rtbassoc-0525808c346852eaf",
+            "route_table_id": "rtb-0c1d2d6dcc7a38a51",
+            "subnet_id": "subnet-044fa2a8b38eb1dc7",
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAsImRlbGV0ZSI6MzAwMDAwMDAwMDAwLCJ1cGRhdGUiOjEyMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "module.network.aws_internet_gateway.this",
+            "module.network.aws_route_table.public",
+            "module.network.aws_subnet.public",
+            "module.network.aws_vpc.this",
+            "module.network.data.aws_availability_zones.available"
+          ]
+        },
+        {
+          "index_key": 1,
+          "schema_version": 0,
+          "attributes": {
+            "gateway_id": "",
+            "id": "rtbassoc-021f3ddf6c994ba2e",
+            "route_table_id": "rtb-0c1d2d6dcc7a38a51",
+            "subnet_id": "subnet-0d459090918954223",
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAsImRlbGV0ZSI6MzAwMDAwMDAwMDAwLCJ1cGRhdGUiOjEyMDAwMDAwMDAwMH19",
+          "dependencies": [
+            "module.network.aws_internet_gateway.this",
+            "module.network.aws_route_table.public",
+            "module.network.aws_subnet.public",
+            "module.network.aws_vpc.this",
+            "module.network.data.aws_availability_zones.available"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.network",
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "alb",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:ap-northeast-2:566533524321:security-group/sg-0da682d22b265d4a1",
+            "description": "Managed by Terraform",
+            "egress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 0,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "-1",
+                "security_groups": [],
+                "self": false,
+                "to_port": 0
+              }
+            ],
+            "id": "sg-0da682d22b265d4a1",
+            "ingress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 80,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [],
+                "self": false,
+                "to_port": 80
+              }
+            ],
+            "name": "ticket-alb-sg-dev",
+            "name_prefix": "",
+            "owner_id": "566533524321",
+            "revoke_rules_on_delete": false,
+            "tags": {
+              "Name": "ticket-alb-sg-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-alb-sg-dev",
+              "Project": "ticket"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-038bacf337624c780"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6OTAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "module.network.aws_vpc.this"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.network",
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "backend",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:ap-northeast-2:566533524321:security-group/sg-06d5de844d11a591d",
+            "description": "Managed by Terraform",
+            "egress": [
+              {
+                "cidr_blocks": [
+                  "0.0.0.0/0"
+                ],
+                "description": "",
+                "from_port": 0,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "-1",
+                "security_groups": [],
+                "self": false,
+                "to_port": 0
+              }
+            ],
+            "id": "sg-06d5de844d11a591d",
+            "ingress": [
+              {
+                "cidr_blocks": [],
+                "description": "",
+                "from_port": 4000,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [
+                  "sg-0da682d22b265d4a1"
+                ],
+                "self": false,
+                "to_port": 4001
+              }
+            ],
+            "name": "ticket-backend-sg-dev",
+            "name_prefix": "",
+            "owner_id": "566533524321",
+            "revoke_rules_on_delete": false,
+            "tags": {
+              "Name": "ticket-backend-sg-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-backend-sg-dev",
+              "Project": "ticket"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-038bacf337624c780"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6OTAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "module.network.aws_security_group.alb",
+            "module.network.aws_vpc.this"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.network",
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "db",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:ap-northeast-2:566533524321:security-group/sg-013503bcf8c2011eb",
+            "description": "Managed by Terraform",
+            "egress": [],
+            "id": "sg-013503bcf8c2011eb",
+            "ingress": [
+              {
+                "cidr_blocks": [],
+                "description": "",
+                "from_port": 3306,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [
+                  "sg-06d5de844d11a591d"
+                ],
+                "self": false,
+                "to_port": 3306
+              }
+            ],
+            "name": "ticket-db-sg-dev",
+            "name_prefix": "",
+            "owner_id": "566533524321",
+            "revoke_rules_on_delete": false,
+            "tags": {
+              "Name": "ticket-db-sg-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-db-sg-dev",
+              "Project": "ticket"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-038bacf337624c780"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6OTAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "module.network.aws_security_group.alb",
+            "module.network.aws_security_group.backend",
+            "module.network.aws_vpc.this"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.network",
+      "mode": "managed",
+      "type": "aws_security_group",
+      "name": "redis",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:ap-northeast-2:566533524321:security-group/sg-024bcfe6d45dd616c",
+            "description": "Managed by Terraform",
+            "egress": [],
+            "id": "sg-024bcfe6d45dd616c",
+            "ingress": [
+              {
+                "cidr_blocks": [],
+                "description": "",
+                "from_port": 6379,
+                "ipv6_cidr_blocks": [],
+                "prefix_list_ids": [],
+                "protocol": "tcp",
+                "security_groups": [
+                  "sg-06d5de844d11a591d"
+                ],
+                "self": false,
+                "to_port": 6379
+              }
+            ],
+            "name": "ticket-redis-sg-dev",
+            "name_prefix": "",
+            "owner_id": "566533524321",
+            "revoke_rules_on_delete": false,
+            "tags": {
+              "Name": "ticket-redis-sg-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-redis-sg-dev",
+              "Project": "ticket"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-038bacf337624c780"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6OTAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "module.network.aws_security_group.alb",
+            "module.network.aws_security_group.backend",
+            "module.network.aws_vpc.this"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.network",
+      "mode": "managed",
+      "type": "aws_subnet",
+      "name": "private",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "index_key": 0,
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:ap-northeast-2:566533524321:subnet/subnet-0e6d242f99d39e0de",
+            "assign_ipv6_address_on_creation": false,
+            "availability_zone": "ap-northeast-2a",
+            "availability_zone_id": "apne2-az1",
+            "cidr_block": "10.0.10.0/24",
+            "customer_owned_ipv4_pool": "",
+            "enable_dns64": false,
+            "enable_lni_at_device_index": 0,
+            "enable_resource_name_dns_a_record_on_launch": false,
+            "enable_resource_name_dns_aaaa_record_on_launch": false,
+            "id": "subnet-0e6d242f99d39e0de",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_association_id": "",
+            "ipv6_native": false,
+            "map_customer_owned_ip_on_launch": false,
+            "map_public_ip_on_launch": false,
+            "outpost_arn": "",
+            "owner_id": "566533524321",
+            "private_dns_hostname_type_on_launch": "ip-name",
+            "tags": {
+              "Name": "ticket-private-dev-0"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-private-dev-0",
+              "Project": "ticket"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-038bacf337624c780"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "module.network.aws_vpc.this",
+            "module.network.data.aws_availability_zones.available"
+          ]
+        },
+        {
+          "index_key": 1,
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:ap-northeast-2:566533524321:subnet/subnet-08f086e61a492b87a",
+            "assign_ipv6_address_on_creation": false,
+            "availability_zone": "ap-northeast-2b",
+            "availability_zone_id": "apne2-az2",
+            "cidr_block": "10.0.11.0/24",
+            "customer_owned_ipv4_pool": "",
+            "enable_dns64": false,
+            "enable_lni_at_device_index": 0,
+            "enable_resource_name_dns_a_record_on_launch": false,
+            "enable_resource_name_dns_aaaa_record_on_launch": false,
+            "id": "subnet-08f086e61a492b87a",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_association_id": "",
+            "ipv6_native": false,
+            "map_customer_owned_ip_on_launch": false,
+            "map_public_ip_on_launch": false,
+            "outpost_arn": "",
+            "owner_id": "566533524321",
+            "private_dns_hostname_type_on_launch": "ip-name",
+            "tags": {
+              "Name": "ticket-private-dev-1"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-private-dev-1",
+              "Project": "ticket"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-038bacf337624c780"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "module.network.aws_vpc.this",
+            "module.network.data.aws_availability_zones.available"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.network",
+      "mode": "managed",
+      "type": "aws_subnet",
+      "name": "public",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "index_key": 0,
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:ap-northeast-2:566533524321:subnet/subnet-044fa2a8b38eb1dc7",
+            "assign_ipv6_address_on_creation": false,
+            "availability_zone": "ap-northeast-2a",
+            "availability_zone_id": "apne2-az1",
+            "cidr_block": "10.0.0.0/24",
+            "customer_owned_ipv4_pool": "",
+            "enable_dns64": false,
+            "enable_lni_at_device_index": 0,
+            "enable_resource_name_dns_a_record_on_launch": false,
+            "enable_resource_name_dns_aaaa_record_on_launch": false,
+            "id": "subnet-044fa2a8b38eb1dc7",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_association_id": "",
+            "ipv6_native": false,
+            "map_customer_owned_ip_on_launch": false,
+            "map_public_ip_on_launch": true,
+            "outpost_arn": "",
+            "owner_id": "566533524321",
+            "private_dns_hostname_type_on_launch": "ip-name",
+            "tags": {
+              "Name": "ticket-public-dev-0"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-public-dev-0",
+              "Project": "ticket"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-038bacf337624c780"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "module.network.aws_vpc.this",
+            "module.network.data.aws_availability_zones.available"
+          ]
+        },
+        {
+          "index_key": 1,
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:ap-northeast-2:566533524321:subnet/subnet-0d459090918954223",
+            "assign_ipv6_address_on_creation": false,
+            "availability_zone": "ap-northeast-2b",
+            "availability_zone_id": "apne2-az2",
+            "cidr_block": "10.0.1.0/24",
+            "customer_owned_ipv4_pool": "",
+            "enable_dns64": false,
+            "enable_lni_at_device_index": 0,
+            "enable_resource_name_dns_a_record_on_launch": false,
+            "enable_resource_name_dns_aaaa_record_on_launch": false,
+            "id": "subnet-0d459090918954223",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_association_id": "",
+            "ipv6_native": false,
+            "map_customer_owned_ip_on_launch": false,
+            "map_public_ip_on_launch": true,
+            "outpost_arn": "",
+            "owner_id": "566533524321",
+            "private_dns_hostname_type_on_launch": "ip-name",
+            "tags": {
+              "Name": "ticket-public-dev-1"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-public-dev-1",
+              "Project": "ticket"
+            },
+            "timeouts": null,
+            "vpc_id": "vpc-038bacf337624c780"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6MTIwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "module.network.aws_vpc.this",
+            "module.network.data.aws_availability_zones.available"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.network",
+      "mode": "managed",
+      "type": "aws_vpc",
+      "name": "this",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "arn": "arn:aws:ec2:ap-northeast-2:566533524321:vpc/vpc-038bacf337624c780",
+            "assign_generated_ipv6_cidr_block": false,
+            "cidr_block": "10.0.0.0/16",
+            "default_network_acl_id": "acl-03ff9426a4dbdf7ec",
+            "default_route_table_id": "rtb-04cd0dae76742526b",
+            "default_security_group_id": "sg-0a8eeda7e390c12f4",
+            "dhcp_options_id": "dopt-04a35e1ae00c27ef2",
+            "enable_dns_hostnames": true,
+            "enable_dns_support": true,
+            "enable_network_address_usage_metrics": false,
+            "id": "vpc-038bacf337624c780",
+            "instance_tenancy": "default",
+            "ipv4_ipam_pool_id": null,
+            "ipv4_netmask_length": null,
+            "ipv6_association_id": "",
+            "ipv6_cidr_block": "",
+            "ipv6_cidr_block_network_border_group": "",
+            "ipv6_ipam_pool_id": "",
+            "ipv6_netmask_length": 0,
+            "main_route_table_id": "rtb-04cd0dae76742526b",
+            "owner_id": "566533524321",
+            "tags": {
+              "Environment": "dev",
+              "Name": "ticket-vpc-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-vpc-dev",
+              "Project": "ticket"
+            }
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "eyJzY2hlbWFfdmVyc2lvbiI6IjEifQ=="
+        }
+      ]
+    },
+    {
+      "module": "module.rds",
+      "mode": "managed",
+      "type": "aws_db_instance",
+      "name": "this",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 2,
+          "attributes": {
+            "address": "ticket-booking-dev.cgco5zwxudtk.ap-northeast-2.rds.amazonaws.com",
+            "allocated_storage": 20,
+            "allow_major_version_upgrade": null,
+            "apply_immediately": false,
+            "arn": "arn:aws:rds:ap-northeast-2:566533524321:db:ticket-booking-dev",
+            "auto_minor_version_upgrade": true,
+            "availability_zone": "ap-northeast-2b",
+            "backup_retention_period": 1,
+            "backup_target": "region",
+            "backup_window": "16:16-16:46",
+            "blue_green_update": [],
+            "ca_cert_identifier": "rds-ca-rsa2048-g1",
+            "character_set_name": "",
+            "copy_tags_to_snapshot": false,
+            "custom_iam_instance_profile": "",
+            "customer_owned_ip_enabled": false,
+            "database_insights_mode": "standard",
+            "db_name": "ticket_booking",
+            "db_subnet_group_name": "ticket-db-dev",
+            "dedicated_log_volume": false,
+            "delete_automated_backups": true,
+            "deletion_protection": false,
+            "domain": "",
+            "domain_auth_secret_arn": "",
+            "domain_dns_ips": [],
+            "domain_fqdn": "",
+            "domain_iam_role_name": "",
+            "domain_ou": "",
+            "enabled_cloudwatch_logs_exports": [],
+            "endpoint": "ticket-booking-dev.cgco5zwxudtk.ap-northeast-2.rds.amazonaws.com:3306",
+            "engine": "mysql",
+            "engine_lifecycle_support": "open-source-rds-extended-support",
+            "engine_version": "8.0",
+            "engine_version_actual": "8.0.46",
+            "final_snapshot_identifier": null,
+            "hosted_zone_id": "ZLA2NUCOLGUUR",
+            "iam_database_authentication_enabled": false,
+            "id": "db-Y4ARC2Q73RAZDQ5CNEV64X7UT4",
+            "identifier": "ticket-booking-dev",
+            "identifier_prefix": "",
+            "instance_class": "db.t3.small",
+            "iops": 0,
+            "kms_key_id": "arn:aws:kms:ap-northeast-2:566533524321:key/f5a1f9ba-a798-4475-b8a8-ce8abbb7b056",
+            "latest_restorable_time": "2026-09-11T08:00:18Z",
+            "license_model": "general-public-license",
+            "listener_endpoint": [],
+            "maintenance_window": "fri:18:34-fri:19:04",
+            "manage_master_user_password": null,
+            "master_user_secret": [],
+            "master_user_secret_kms_key_id": null,
+            "max_allocated_storage": 100,
+            "monitoring_interval": 0,
+            "monitoring_role_arn": "",
+            "multi_az": false,
+            "nchar_character_set_name": "",
+            "network_type": "IPV4",
+            "option_group_name": "default:mysql-8-0",
+            "parameter_group_name": "default.mysql8.0",
+            "password": "kYNe%tj)R6O]U_Zpp=1]O7Da",
+            "password_wo": null,
+            "password_wo_version": null,
+            "performance_insights_enabled": false,
+            "performance_insights_kms_key_id": "",
+            "performance_insights_retention_period": 0,
+            "port": 3306,
+            "publicly_accessible": false,
+            "replica_mode": "",
+            "replicas": [],
+            "replicate_source_db": "",
+            "resource_id": "db-Y4ARC2Q73RAZDQ5CNEV64X7UT4",
+            "restore_to_point_in_time": [],
+            "s3_import": [],
+            "skip_final_snapshot": true,
+            "snapshot_identifier": null,
+            "status": "available",
+            "storage_encrypted": true,
+            "storage_throughput": 0,
+            "storage_type": "gp2",
+            "tags": {
+              "Environment": "dev",
+              "Name": "ticket-rds-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-rds-dev",
+              "Project": "ticket"
+            },
+            "timeouts": null,
+            "timezone": "",
+            "upgrade_storage_config": null,
+            "username": "ticket",
+            "vpc_security_group_ids": [
+              "sg-013503bcf8c2011eb"
+            ]
+          },
+          "sensitive_attributes": [
+            [
+              {
+                "type": "get_attr",
+                "value": "password"
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "password_wo"
+              }
+            ]
+          ],
+          "identity_schema_version": 0,
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjozMDAwMDAwMDAwMDAwLCJkZWxldGUiOjM2MDAwMDAwMDAwMDAsInVwZGF0ZSI6NDgwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMiJ9",
+          "dependencies": [
+            "module.network.aws_security_group.alb",
+            "module.network.aws_security_group.backend",
+            "module.network.aws_security_group.db",
+            "module.network.aws_subnet.private",
+            "module.network.aws_vpc.this",
+            "module.network.data.aws_availability_zones.available",
+            "module.rds.aws_db_subnet_group.this",
+            "module.secrets.random_password.db"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.rds",
+      "mode": "managed",
+      "type": "aws_db_subnet_group",
+      "name": "this",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:rds:ap-northeast-2:566533524321:subgrp:ticket-db-dev",
+            "description": "Managed by Terraform",
+            "id": "ticket-db-dev",
+            "name": "ticket-db-dev",
+            "name_prefix": "",
+            "subnet_ids": [
+              "subnet-08f086e61a492b87a",
+              "subnet-0e6d242f99d39e0de"
+            ],
+            "supported_network_types": [
+              "IPV4"
+            ],
+            "tags": {
+              "Name": "ticket-db-subnet-group-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-db-subnet-group-dev",
+              "Project": "ticket"
+            },
+            "vpc_id": "vpc-038bacf337624c780"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.network.aws_subnet.private",
+            "module.network.aws_vpc.this",
+            "module.network.data.aws_availability_zones.available"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.secrets",
+      "mode": "managed",
+      "type": "aws_secretsmanager_secret",
+      "name": "db",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:secretsmanager:ap-northeast-2:566533524321:secret:ticket/db/dev/master-JHYmrG",
+            "description": "Ticket booking RDS master credential (dev)",
+            "force_overwrite_replica_secret": false,
+            "id": "arn:aws:secretsmanager:ap-northeast-2:566533524321:secret:ticket/db/dev/master-JHYmrG",
+            "kms_key_id": "",
+            "name": "ticket/db/dev/master",
+            "name_prefix": "",
+            "policy": "",
+            "recovery_window_in_days": 30,
+            "replica": [],
+            "tags": {
+              "Name": "ticket-db-secret-dev"
+            },
+            "tags_all": {
+              "Environment": "dev",
+              "ManagedBy": "terraform",
+              "Name": "ticket-db-secret-dev",
+              "Project": "ticket"
+            }
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0,
+          "private": "bnVsbA=="
+        }
+      ]
+    },
+    {
+      "module": "module.secrets",
+      "mode": "managed",
+      "type": "aws_secretsmanager_secret_version",
+      "name": "db",
+      "provider": "provider[\"registry.terraform.io/hashicorp/aws\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "arn": "arn:aws:secretsmanager:ap-northeast-2:566533524321:secret:ticket/db/dev/master-JHYmrG",
+            "has_secret_string_wo": null,
+            "id": "arn:aws:secretsmanager:ap-northeast-2:566533524321:secret:ticket/db/dev/master-JHYmrG|terraform-20260911063813672800000002",
+            "secret_binary": "",
+            "secret_id": "arn:aws:secretsmanager:ap-northeast-2:566533524321:secret:ticket/db/dev/master-JHYmrG",
+            "secret_string": "{\"password\":\"kYNe%tj)R6O]U_Zpp=1]O7Da\",\"username\":\"ticket\"}",
+            "secret_string_wo": null,
+            "secret_string_wo_version": null,
+            "version_id": "terraform-20260911063813672800000002",
+            "version_stages": [
+              "AWSCURRENT"
+            ]
+          },
+          "sensitive_attributes": [
+            [
+              {
+                "type": "get_attr",
+                "value": "secret_binary"
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "secret_string"
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "secret_string_wo"
+              }
+            ]
+          ],
+          "identity_schema_version": 0,
+          "private": "bnVsbA==",
+          "dependencies": [
+            "module.secrets.aws_secretsmanager_secret.db",
+            "module.secrets.random_password.db"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.secrets",
+      "mode": "managed",
+      "type": "random_password",
+      "name": "db",
+      "provider": "provider[\"registry.terraform.io/hashicorp/random\"]",
+      "instances": [
+        {
+          "schema_version": 3,
+          "attributes": {
+            "bcrypt_hash": "$2a$10$5PItuwOIs3r.iH7LLE91gu.C29.a06ZMp9BDg0N.TjIBvtRKgqnhi",
+            "id": "none",
+            "keepers": null,
+            "length": 24,
+            "lower": true,
+            "min_lower": 0,
+            "min_numeric": 0,
+            "min_special": 0,
+            "min_upper": 0,
+            "number": true,
+            "numeric": true,
+            "override_special": "!#$%^\u0026*()-_=+[]{}",
+            "result": "kYNe%tj)R6O]U_Zpp=1]O7Da",
+            "special": true,
+            "upper": true
+          },
+          "sensitive_attributes": [
+            [
+              {
+                "type": "get_attr",
+                "value": "bcrypt_hash"
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "result"
+              }
+            ]
+          ],
+          "identity_schema_version": 0
+        }
+      ]
+    }
+  ],
+  "check_results": null
+}

@@ -35,7 +35,23 @@ export default function PaymentPage() {
     }
   }
 
-  const apiBase = process.env.NEXT_PUBLIC_API_BASE ?? 'http://localhost:4000';
+  async function cancel() {
+    if (!bookingId) return;
+    setError('');
+    setLoading(true);
+    try {
+      await api.cancelBooking(bookingId);
+      localStorage.removeItem('seatId');
+      alert('예약이 취소되었습니다. 좌석이 다시 예매 가능(빈자리) 상태가 됩니다.');
+      router.push('/');
+    } catch (e) {
+      setError((e as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const apiBase = process.env.NEXT_PUBLIC_API_BASE ?? '/api';
 
   return (
     <main>
@@ -71,10 +87,16 @@ export default function PaymentPage() {
                 <button>티켓 다운로드</button>
               </a>
             )}
+            {bookingId && (
+              <button onClick={cancel} disabled={loading} style={{ background: 'var(--sold)' }}>
+                {loading ? '취소 중...' : '예약 취소'}
+              </button>
+            )}
             <button onClick={() => router.push('/')} style={{ background: '#475569' }}>
               처음으로
             </button>
           </div>
+          {error && <p style={{ color: 'var(--sold)' }}>{error}</p>}
         </div>
       )}
     </main>

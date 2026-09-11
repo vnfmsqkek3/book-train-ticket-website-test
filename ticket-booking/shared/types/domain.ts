@@ -53,7 +53,7 @@ export enum SeatState {
 export const SEAT_TRANSITIONS: Record<SeatState, SeatState[]> = {
   [SeatState.AVAILABLE]: [SeatState.LOCKED],
   [SeatState.LOCKED]: [SeatState.SOLD, SeatState.AVAILABLE], // 확정 또는 만료/해제
-  [SeatState.SOLD]: [], // 종료 상태
+  [SeatState.SOLD]: [SeatState.AVAILABLE], // 예약 취소 시 다시 가용 (빈자리 발생)
 };
 
 export function canTransitionSeat(from: SeatState, to: SeatState): boolean {

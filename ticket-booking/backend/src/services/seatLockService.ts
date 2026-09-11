@@ -140,6 +140,55 @@ export async function confirmBooking(
 }
 
 /**
+ * 예약 취소 (신규). 판매 완료(SOLD)된 좌석을 다시 가용 상태로 되돌려 빈자리를 만든다.
+ * - 예매 소유자만 취소 가능
+ * - SOLD → AVAILABLE 전이 (Optimistic Lock version CAS)
+ * - 예매 기록 삭제
+ * @returns 좌석 변경 정보 (WebSocket 브로드캐스트용)
+ */
+export async function cancelBooking(
+  userId: string,
+  bookingId: string,
+): Promise<{ trainId: string; change: SeatChange }> {
+  const booking = await store.getBooking(bookingId);
+  if (!booking) throw Errors.notFound('예매 내역을 찾을 수 없습니다.');
+  if (booking.userId !== userId) {
+    throw Errors.unauthorized('본인의 예매만 취소할 수 있습니다.');
+  }
+
+  const { trainId, seatId } = booking;
+  const seat = await store.getSeat(trainId, seatId);
+  if (!seat) throw Errors.notFound('좌석을 찾을 수 없습니다.');
+
+  // SOLD 상태에서만 취소 가능 (가드)
+  if (seat.state !== SeatState.SOLD) {
+    throw Errors.invalidTransition(`예약 취소 불가: 좌석 상태가 ${seat.state}입니다.`);
+  }
+  if (!canTransitionSeat(seat.state, SeatState.AVAILABLE)) {
+    throw Errors.invalidTransition(`좌석 전이 불가: ${seat.state} → AVAILABLE`);
+  }
+
+  // SOLD → AVAILABLE (Optimistic Lock). 빈자리 발생.
+  const ok = await store.updateSeatWithVersion(trainId, seatId, seat.version, {
+    state: SeatState.AVAILABLE,
+    ownerId: null,
+    lockExpiresAt: null,
+  });
+  if (!ok) throw Errors.seatVersionConflict();
+
+  // 잔여 Redis 잠금이 있으면 제거 (방어적)
+  await redis.del(lockKey(trainId, seatId));
+
+  // 예매 기록 삭제
+  await store.deleteBooking(bookingId);
+
+  return {
+    trainId,
+    change: { seatId, state: SeatState.AVAILABLE, ownerId: null },
+  };
+}
+
+/**
  * 좌석 잠금 해제 (make.md sequenceDiagram 타임아웃/취소).
  * LOCKED → AVAILABLE 전이.
  */

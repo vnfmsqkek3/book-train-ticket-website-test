@@ -38,4 +38,9 @@ export async function updateSession(
   return next;
 }
 
+/** 세션 삭제 (로그아웃/정리). Redis에서 session:{userId} 제거. */
+export async function clearSession(userId: string): Promise<void> {
+  await redis.del(key(userId));
+}
+
 export type { QueueState };

@@ -45,8 +45,11 @@ describe('좌석 상태 전이 가드', () => {
     expect(canTransitionSeat(SeatState.LOCKED, SeatState.AVAILABLE)).toBe(true);
   });
 
-  it('차단: SOLD → 그 무엇도 불가', () => {
-    expect(canTransitionSeat(SeatState.SOLD, SeatState.AVAILABLE)).toBe(false);
+  it('허용: SOLD → AVAILABLE (예약 취소로 빈자리 발생)', () => {
+    expect(canTransitionSeat(SeatState.SOLD, SeatState.AVAILABLE)).toBe(true);
+  });
+
+  it('차단: SOLD → LOCKED (취소 없이 바로 잠금 불가)', () => {
     expect(canTransitionSeat(SeatState.SOLD, SeatState.LOCKED)).toBe(false);
   });
 

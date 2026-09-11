@@ -14,6 +14,7 @@ import {
   ConfirmBookingRequest,
   ConfirmBookingResponse,
   BookingResponse,
+  CancelBookingResponse,
   QueueState,
 } from '../../../shared/types';
 import { Errors } from '../errors';
@@ -56,6 +57,33 @@ bookingRouter.get(
     const booking = await store.getBooking(req.params.bookingId);
     if (!booking) throw Errors.notFound('예매 내역을 찾을 수 없습니다.');
     const body: BookingResponse = { booking };
+    res.json(body);
+  }),
+);
+
+// 예약 취소: SOLD 좌석을 AVAILABLE로 되돌려 빈자리 생성 + 브로드캐스트
+bookingRouter.delete(
+  '/:bookingId',
+  asyncHandler(async (req: AuthedRequest, res) => {
+    const { trainId, change } = await seatLockService.cancelBooking(
+      req.userId!,
+      req.params.bookingId,
+    );
+
+    // 세션에서 예매/좌석 정보 정리
+    await sessionService.updateSession(req.userId!, {
+      bookingId: null,
+      selectedSeatId: null,
+    });
+
+    // 모든 클라이언트에 좌석 해제 브로드캐스트 (baseline #7)
+    broadcastSeatChanges(trainId, [change]);
+
+    const body: CancelBookingResponse = {
+      ok: true,
+      seatId: change.seatId,
+      trainId,
+    };
     res.json(body);
   }),
 );

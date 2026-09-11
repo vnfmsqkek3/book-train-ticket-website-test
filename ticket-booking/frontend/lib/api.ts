@@ -76,5 +76,15 @@ export const api = {
 
   getBooking: (bookingId: string) => req<BookingResponse>(`/booking/${bookingId}`),
 
+  cancelBooking: (bookingId: string) =>
+    req<{ ok: true; seatId: string; trainId: string }>(`/booking/${bookingId}`, {
+      method: 'DELETE',
+    }),
+
   getSession: (userId: string) => req<SessionResponse>(`/session/${userId}`),
+
+  clearSession: (userId: string) =>
+    req<{ ok: true }>(`/session/${userId}`, { method: 'DELETE' }),
+
+  logout: () => req<{ ok: true }>('/auth/logout', { method: 'POST' }),
 };
