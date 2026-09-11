@@ -18,6 +18,7 @@ resource "aws_vpc" "this" {
 
 resource "aws_internet_gateway" "this" {
   vpc_id = aws_vpc.this.id
+  tags   = { Name = "ticket-igw-${var.env}" }
 }
 
 resource "aws_subnet" "public" {
@@ -39,11 +40,13 @@ resource "aws_subnet" "private" {
 
 resource "aws_eip" "nat" {
   domain = "vpc"
+  tags   = { Name = "ticket-nat-eip-${var.env}" }
 }
 
 resource "aws_nat_gateway" "this" {
   allocation_id = aws_eip.nat.id
   subnet_id     = aws_subnet.public[0].id
+  tags          = { Name = "ticket-nat-${var.env}" }
 }
 
 resource "aws_route_table" "public" {
@@ -52,6 +55,7 @@ resource "aws_route_table" "public" {
     cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.this.id
   }
+  tags = { Name = "ticket-rt-public-${var.env}" }
 }
 
 resource "aws_route_table_association" "public" {
@@ -66,6 +70,7 @@ resource "aws_route_table" "private" {
     cidr_block     = "0.0.0.0/0"
     nat_gateway_id = aws_nat_gateway.this.id
   }
+  tags = { Name = "ticket-rt-private-${var.env}" }
 }
 
 resource "aws_route_table_association" "private" {
@@ -90,6 +95,7 @@ resource "aws_security_group" "alb" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  tags = { Name = "ticket-alb-sg-${var.env}" }
 }
 
 resource "aws_security_group" "backend" {
@@ -107,6 +113,7 @@ resource "aws_security_group" "backend" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+  tags = { Name = "ticket-backend-sg-${var.env}" }
 }
 
 resource "aws_security_group" "db" {
@@ -118,6 +125,7 @@ resource "aws_security_group" "db" {
     protocol        = "tcp"
     security_groups = [aws_security_group.backend.id]
   }
+  tags = { Name = "ticket-db-sg-${var.env}" }
 }
 
 resource "aws_security_group" "redis" {
@@ -129,6 +137,7 @@ resource "aws_security_group" "redis" {
     protocol        = "tcp"
     security_groups = [aws_security_group.backend.id]
   }
+  tags = { Name = "ticket-redis-sg-${var.env}" }
 }
 
 output "vpc_id" { value = aws_vpc.this.id }

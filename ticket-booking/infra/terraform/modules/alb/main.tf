@@ -42,6 +42,8 @@ resource "aws_lb_target_group" "backend" {
     cookie_duration = 300
     enabled         = true
   }
+
+  tags = { Name = "ticket-tg-${var.env}" }
 }
 
 resource "aws_lb_listener" "http" {

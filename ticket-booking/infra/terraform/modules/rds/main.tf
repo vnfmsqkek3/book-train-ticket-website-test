@@ -14,6 +14,7 @@ variable "db_username" {
   type    = string
   default = "ticket"
 }
+# Secrets Manager에서 생성된 비밀번호 (하드코딩 금지)
 variable "db_password" {
   type      = string
   sensitive = true
@@ -22,6 +23,7 @@ variable "db_password" {
 resource "aws_db_subnet_group" "this" {
   name       = "ticket-db-${var.env}"
   subnet_ids = var.private_subnet_ids
+  tags       = { Name = "ticket-db-subnet-group-${var.env}" }
 }
 
 resource "aws_db_instance" "this" {
@@ -43,7 +45,7 @@ resource "aws_db_instance" "this" {
   storage_encrypted       = true
   deletion_protection     = var.env == "prod"
 
-  tags = { Environment = var.env }
+  tags = { Name = "ticket-rds-${var.env}", Environment = var.env }
 }
 
 output "endpoint" { value = aws_db_instance.this.address }

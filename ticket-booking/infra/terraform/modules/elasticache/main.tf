@@ -10,6 +10,7 @@ variable "node_type" {
 resource "aws_elasticache_subnet_group" "this" {
   name       = "ticket-redis-${var.env}"
   subnet_ids = var.private_subnet_ids
+  tags       = { Name = "ticket-redis-subnet-group-${var.env}" }
 }
 
 resource "aws_elasticache_replication_group" "this" {
@@ -27,7 +28,7 @@ resource "aws_elasticache_replication_group" "this" {
   # 대기열 상태 영속성 (make.md §2 큐 상태 복구 - AOF/RDB)
   snapshot_retention_limit = var.env == "prod" ? 5 : 1
 
-  tags = { Environment = var.env }
+  tags = { Name = "ticket-redis-${var.env}", Environment = var.env }
 }
 
 output "endpoint" { value = aws_elasticache_replication_group.this.primary_endpoint_address }
