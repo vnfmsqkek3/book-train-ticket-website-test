@@ -7,10 +7,28 @@ import { asyncHandler } from '../middleware/errorHandler';
 import { authMiddleware } from '../middleware/auth';
 import * as trainService from '../services/trainService';
 import * as seatLockService from '../services/seatLockService';
-import { TrainSearchResponse, SeatMapResponse } from '../../../shared/types';
+import { bookableDates, DEPARTURE_HOURS, routeList, BOOT_BASE } from '../data/seed';
+import {
+  TrainSearchResponse,
+  SeatMapResponse,
+  TrainsMetaResponse,
+} from '../../../shared/types';
 
 export const trainRouter = Router();
 trainRouter.use(authMiddleware);
+
+// 예약 가능 날짜(시스템 기준 7일)/시간대(06~23)/노선 메타
+trainRouter.get(
+  '/meta',
+  asyncHandler(async (_req, res) => {
+    const body: TrainsMetaResponse = {
+      dates: bookableDates(BOOT_BASE),
+      hours: DEPARTURE_HOURS,
+      routes: routeList(),
+    };
+    res.json(body);
+  }),
+);
 
 trainRouter.get(
   '/',

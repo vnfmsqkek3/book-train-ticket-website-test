@@ -7,6 +7,7 @@ import type {
   JoinQueueResponse,
   QueueStatusResponse,
   TrainSearchResponse,
+  TrainsMetaResponse,
   SeatMapResponse,
   SelectSeatResponse,
   ConfirmBookingResponse,
@@ -59,6 +60,8 @@ export const api = {
 
   searchTrains: (from: string, to: string, date: string) =>
     req<TrainSearchResponse>(`/trains?from=${from}&to=${to}&date=${date}`),
+
+  trainsMeta: () => req<TrainsMetaResponse>('/trains/meta'),
 
   seatMap: (trainId: string) => req<SeatMapResponse>(`/trains/${trainId}/seats`),
 

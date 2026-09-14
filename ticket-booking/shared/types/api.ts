@@ -60,6 +60,17 @@ export interface TrainSearchResponse {
   cached: boolean;
 }
 
+// ── GET /trains/meta (예약 가능 날짜/시간대/노선) ──
+export interface TrainRouteMeta {
+  from: string;
+  to: string;
+}
+export interface TrainsMetaResponse {
+  dates: string[]; // 시스템 날짜 기준 예약 가능 7일 (YYYY-MM-DD)
+  hours: number[]; // 운행 시간대 (6~23)
+  routes: TrainRouteMeta[];
+}
+
 // ── GET /trains/:trainId/seats ──
 export interface SeatMapResponse {
   trainId: string;

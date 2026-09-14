@@ -157,7 +157,7 @@ class MySqlStore implements Store {
 
   async seedSeats(seats: Seat[]): Promise<void> {
     if (seats.length === 0) return;
-    const values = seats.map((s) => [
+    const toRow = (s: Seat) => [
       s.seatId,
       s.trainId,
       s.state,
@@ -167,13 +167,18 @@ class MySqlStore implements Store {
       s.position.row,
       s.position.col,
       s.position.type,
-    ]);
-    await this.pool.query(
-      `INSERT IGNORE INTO seats
-       (seat_id, train_id, state, owner_id, version, lock_expires_at, pos_row, pos_col, pos_type)
-       VALUES ?`,
-      [values],
-    );
+    ];
+    // 대량 시드(7일×18시간×노선×60석) 대비 배치 삽입 (max_allowed_packet 방어)
+    const BATCH = 1000;
+    for (let i = 0; i < seats.length; i += BATCH) {
+      const values = seats.slice(i, i + BATCH).map(toRow);
+      await this.pool.query(
+        `INSERT IGNORE INTO seats
+         (seat_id, train_id, state, owner_id, version, lock_expires_at, pos_row, pos_col, pos_type)
+         VALUES ?`,
+        [values],
+      );
+    }
   }
 
   async getSeats(trainId: string): Promise<Seat[]> {
